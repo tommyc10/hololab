@@ -44,3 +44,8 @@ def create_item(item: schemas.ItemBase, db: Session = Depends(get_db)):
     db.refresh(db_item)
     return db_item
 
+
+@app.get("/items/", response_model=list[schemas.Item])
+def get_items(db: Session = Depends(get_db)):
+    items = db.query(models.Item).all()
+    return items
