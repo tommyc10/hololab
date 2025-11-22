@@ -23,3 +23,14 @@ export const createItem = async (itemData: Omit<Item, "id" | "is_active">) => {
   if (!response.ok) throw new Error("Failed to create item");
   return response.json();
 };
+
+// delete function
+export const deleteItem = async (itemId: number) => {
+  const response = await fetch(`${API_URL}/items/${itemId}/`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) throw new Error("Failed to delete item");
+  return true;
+}
+

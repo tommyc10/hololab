@@ -49,3 +49,17 @@ def create_item(item: schemas.ItemBase, db: Session = Depends(get_db)):
 def get_items(db: Session = Depends(get_db)):
     items = db.query(models.Item).all()
     return items
+
+
+@app.delete("/items/{item_id}")
+def delete_item(item_id: int, db: Session = Depends(get_db)):
+
+    item = db.query(models.Item).filter(models.Item.id == item_id).first()
+
+    if item is None:
+        raise HTTPException(status_code=404, detail="Item not found")
+    
+    db.delete(item)
+    db.commit()
+
+    return {"message": "item deleted"}
