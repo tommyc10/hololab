@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 
 const TIERS = [
   {
@@ -20,6 +21,21 @@ const TIERS = [
   }
 ];
 
+const fadeInUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2
+    }
+  }
+};
+
 export function Pricing() {
   return (
     <section id="pricing" className="py-24 relative">
@@ -32,10 +48,17 @@ export function Pricing() {
         </div>
 
         {/* Pricing Grid */}
-        <div className="grid md:grid-cols-3 gap-8">
+        <motion.div 
+          className="grid md:grid-cols-3 gap-8"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+        >
           {TIERS.map((tier, index) => (
-            <div 
+            <motion.div 
               key={index}
+              variants={fadeInUp}
               className={`
                 relative p-8 rounded-lg border backdrop-blur-sm transition-all duration-300 group flex flex-col h-full
                 ${tier.highlight 
@@ -89,9 +112,9 @@ export function Pricing() {
               <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-white/20 group-hover:border-hologram-blue/50 transition-colors" />
               <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-white/20 group-hover:border-hologram-blue/50 transition-colors" />
 
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
       </div>
     </section>

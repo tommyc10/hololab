@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 
 const PARTNERS = [
   "The Hutt Clan",
@@ -10,7 +11,13 @@ const PARTNERS = [
 export function TrustedBy() {
   return (
     <section id="partners" className="py-20 border-t border-white/5 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 text-center">
+      <motion.div 
+        className="max-w-7xl mx-auto px-6 text-center"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
         
         {/* Header */}
         <h3 className="text-sith-red font-mono text-4xl tracking-[0.3em] uppercase mb-12 opacity-70">
@@ -36,7 +43,7 @@ export function TrustedBy() {
 
         </div>
 
-      </div>
+      </motion.div>
     </section>
   );
 }

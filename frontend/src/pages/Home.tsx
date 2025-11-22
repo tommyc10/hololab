@@ -1,8 +1,25 @@
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { GridBackground } from '../components/layout/GridBackground';
 import { TrustedBy } from '../components/landing/TrustedBy';
 import { Pricing } from '../components/landing/Pricing';
 import { Footer } from '../components/landing/Footer';
+
+// Animation Variants
+const fadeInUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2
+    }
+  }
+};
 
 // 1. DATA: We define our content outside the component.
 const FEATURES = [
@@ -47,30 +64,35 @@ export function Home() {
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
           
           {/* Left: Content */}
-          <div className="space-y-8 relative z-10">
+          <motion.div 
+            className="space-y-8 relative z-10"
+            initial="hidden"
+            animate="visible"
+            variants={staggerContainer}
+          >
             
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-sm border border-hologram-blue/30 bg-hologram-blue/5">
+            <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-3 py-1 rounded-sm border border-hologram-blue/30 bg-hologram-blue/5">
               <span className="w-2 h-2 rounded-full bg-yoda-green animate-pulse"></span>
               <span className="text-xs font-mono text-yoda-green tracking-widest uppercase"> SECURE CONNECTION ESTABLISHED
 </span>
-            </div>
+            </motion.div>
 
             {/* Headline */}
-            <h1 className="text-2xl font-black tracking-[0.25em] text-white uppercase group-hover:text-hologram-blue transition-colors duration-300 font-death-star">
+            <motion.h1 variants={fadeInUp} className="text-2xl font-black tracking-[0.25em] text-white uppercase group-hover:text-hologram-blue transition-colors duration-300 font-death-star">
               HoloLab <br />
               <span className="text-2xl font-black tracking-[0.25em] text-white uppercase group-hover:text-hologram-blue transition-colors duration-300 font-death-star">
                 Control Suite
               </span>
-            </h1>
+            </motion.h1>
 
             {/* Subtext */}
-            <p className="text-lg text-gray-400 max-w-xl leading-relaxed font-mono">
+            <motion.p variants={fadeInUp} className="text-lg text-gray-400 max-w-xl leading-relaxed font-mono">
               The galaxy's most advanced inventory protocol. Track shipments, manage smuggler debts, and monitor supply levels with Imperial precision.
-            </p>
+            </motion.p>
 
             {/* CTAs */}
-            <div className="flex flex-wrap gap-4">
+            <motion.div variants={fadeInUp} className="flex flex-wrap gap-4">
               <Link 
                 to="/inventory"
                 className="px-8 py-4 bg-hologram-blue text-empire-black font-bold uppercase tracking-widest hover:bg-white transition-colors [clip-path:polygon(10%_0,100%_0,100%_80%,90%_100%,0_100%,0_20%)]"
@@ -83,11 +105,16 @@ export function Home() {
               >
                 System Specs
               </button>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Right: Visual */}
-          <div className="relative group">
+          <motion.div 
+            className="relative group"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
             {/* Glow Effect */}
             <div className="absolute -inset-4 bg-hologram-blue/20 blur-3xl rounded-full opacity-50 animate-pulse"></div>
             
@@ -106,7 +133,7 @@ export function Home() {
               {/* Scanline Overlay */}
               <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,240,255,0.05)_50%)] bg-size-[100%_4px] pointer-events-none"></div>
             </div>
-          </div>
+          </motion.div>
 
         </div>
       </section>
@@ -122,9 +149,19 @@ export function Home() {
           </div>
 
           {/* The Loop: Modern Star Wars Cards */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <motion.div 
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+          >
             {FEATURES.map((feature, index) => (
-              <div key={index} className="group relative bg-empire-black border border-white/10 hover:border-hologram-blue/50 transition-all duration-300 overflow-hidden rounded-lg">
+              <motion.div 
+                key={index} 
+                variants={fadeInUp}
+                className="group relative bg-empire-black border border-white/10 hover:border-hologram-blue/50 transition-all duration-300 overflow-hidden rounded-lg"
+              >
                 
                 {/* Image Section with Overlay */}
                 <div className="relative h-48 overflow-hidden border-b border-white/5">
@@ -159,9 +196,9 @@ export function Home() {
                     <span className="text-[10px] uppercase tracking-widest text-hologram-blue font-mono">Access Module</span>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
         </div>
       </section>
