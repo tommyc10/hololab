@@ -94,17 +94,12 @@ export function Home() {
             {/* CTAs */}
             <motion.div variants={fadeInUp} className="flex flex-wrap gap-4">
               <Link 
-                to="/inventory"
-                className="px-8 py-4 bg-hologram-blue text-empire-black font-bold uppercase tracking-widest hover:bg-white transition-colors [clip-path:polygon(10%_0,100%_0,100%_80%,90%_100%,0_100%,0_20%)]"
+                to="/login"
+                className="relative group px-8 py-4 bg-hologram-blue/10 border border-hologram-blue text-hologram-blue font-bold uppercase tracking-widest hover:bg-hologram-blue hover:text-empire-black transition-all duration-300 [clip-path:polygon(10%_0,100%_0,100%_80%,90%_100%,0_100%,0_20%)] shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:shadow-[0_0_40px_rgba(0,240,255,0.6)]"
               >
-                Launch Terminal
+                <span className="relative z-10">Launch Terminal</span>
+                <div className="absolute inset-0 bg-hologram-blue/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </Link>
-              
-              <button 
-                className="px-8 py-4 border border-gray-700 text-white font-bold uppercase tracking-widest hover:border-hologram-blue hover:text-hologram-blue transition-colors [clip-path:polygon(10%_0,100%_0,100%_80%,90%_100%,0_100%,0_20%)]"
-              >
-                System Specs
-              </button>
             </motion.div>
           </motion.div>
 
