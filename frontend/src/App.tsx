@@ -1,20 +1,26 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Inventory } from './pages/Inventory';
 import { Home } from './pages/Home'; 
+import { Navbar } from './components/NavBar';
 
 function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-empire-black text-tatooine-sand font-mono p-8">
+      <div className="min-h-screen bg-empire-black text-tatooine-sand font-mono">
+
+        {/* The Navigation Bar */}
+        <Navbar />
         
         {/* The Route Configuration */}
-        <Routes>
-          {/* Root URL: Shows the Landing Page */}
-          <Route path="/" element={<Home />} />
-          
-          {/* /inventory URL: Shows the Dashboard */}
-          <Route path="/inventory" element={<Inventory />} />
-        </Routes>
+        <div className="p-8">
+          <Routes>
+            {/* Root URL: Shows the Landing Page */}
+            <Route path="/" element={<Home />} />
+            
+            {/* /inventory URL: Shows the Dashboard */}
+            <Route path="/inventory" element={<Inventory />} />
+          </Routes>
+        </div>
 
       </div>
     </BrowserRouter>
