@@ -52,7 +52,7 @@ export function Home() {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-sm border border-hologram-blue/30 bg-hologram-blue/5">
               <span className="w-2 h-2 rounded-full bg-yoda-green animate-pulse"></span>
-              <span className="text-xs font-mono text-yoda-green tracking-widest uppercase">🔒 SECURE CONNECTION ESTABLISHED
+              <span className="text-xs font-mono text-yoda-green tracking-widest uppercase"> SECURE CONNECTION ESTABLISHED
 </span>
             </div>
 
