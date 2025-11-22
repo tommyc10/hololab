@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Inventory } from './pages/Inventory';
 import { Home } from './pages/Home'; 
 import { Navbar } from './components/NavBar';
+import { Login } from './pages/Login';
 
 function App() {
   return (
@@ -19,6 +20,9 @@ function App() {
             
             {/* /inventory URL: Shows the Dashboard */}
             <Route path="/inventory" element={<Inventory />} />
+            
+            {/* /login URL: Shows the Login Page */}
+            <Route path="/login" element={<Login />} />
           </Routes>
         </div>
 

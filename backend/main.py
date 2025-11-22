@@ -1,7 +1,10 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware 
 from sqlalchemy.orm import Session
 import models, schemas, database
+from hashing import Hash
+from fastapi.security import OAuth2PasswordRequestForm
+import token_auth
 
 
 models.Base.metadata.create_all(bind=database.engine)
@@ -27,6 +30,31 @@ def get_db():
         yield db
     finally:
         db.close()
+
+@app.post('/user', response_model=schemas.UserShow)
+def create_user(request: schemas.UserCreate, db: Session = Depends(get_db)):
+
+
+        # --- ADD THIS DEBUG LINE ---
+    print(f"DEBUG: Password to hash is: {request.password}")
+    print(f"DEBUG: Type is: {type(request.password)}")
+    # ---------------------------
+    # 1. Check if user already exists (Optional but good practice)
+    # (We will skip the check for now to keep it simple, database will error if duplicate)
+
+    # 2. Create the new User object
+    new_user = models.User(
+        username=request.username, 
+        hashed_password=Hash.bcrypt(request.password) # Scramble the password!
+    )
+    
+    # 3. Add to DB and Commit
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    
+    # 4. Return the user (schema filters out the password)
+    return new_user
 
 @app.get("/")
 def read_root():
@@ -63,3 +91,15 @@ def delete_item(item_id: int, db: Session = Depends(get_db)):
     db.commit()
 
     return {"message": "item deleted"}
+
+
+@app.post('/login')
+def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.username == request.username).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Invalid Credentials")
+    if not Hash.verify(user.hashed_password, request.password):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Incorrect Password")
+
+    access_token = token_auth.create_access_token(data={"sub": user.username})
+    return {"access_token": access_token, "token_type": "bearer"}

@@ -1,5 +1,15 @@
 from pydantic import BaseModel
 
+
+class UserCreate(BaseModel):
+    username: str
+    password: str
+
+class UserShow(BaseModel):
+    username: str
+
+
+
 class ItemBase(BaseModel):
     name: str
     description: str | None = None
