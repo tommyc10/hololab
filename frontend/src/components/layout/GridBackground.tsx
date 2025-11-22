@@ -31,7 +31,7 @@ export function GridBackground({ children }: GridBackgroundProps) {
             This radial gradient fades from transparent (center) to the base black color (edges),
             creating a spotlight effect on the content.
         */}
-        <div className="absolute inset-0 bg-empire-black [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]" />
+        <div className="absolute inset-0 bg-empire-black mask-[radial-gradient(ellipse_at_center,transparent_20%,black)]" />
       </div>
 
       {/* --- CONTENT SLOT --- */}
