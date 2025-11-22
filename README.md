@@ -14,7 +14,7 @@
 
 *A Star Wars-themed operational console bringing Imperial precision to cantina management.*
 
-[**Live Demo**](https://hololab-demo.vercel.app) • [**Documentation**](https://docs.hololab.dev) • [**Report Bug**](https://github.com/tommyc10/hololab/issues) • [**Request Feature**](https://github.com/tommyc10/hololab/issues)
+[**Live Demo**](#) • [**Documentation**](https://docs.hololab.dev) • [**Report Bug**](https://github.com/tommyc10/hololab/issues) • [**Request Feature**](https://github.com/tommyc10/hololab/issues)
 
 ---
 
@@ -41,11 +41,13 @@ Built for learning, experimentation, and showcasing full-stack development skill
 - ✅ **Inventory CRUD Operations** – Create, read, and delete items with name, description, and price
 - ✅ **Real-Time UI Updates** – Instant feedback on mutations with status indicators
 - ✅ **Sci-Fi Themed Interface** – Holographic glows, scanlines, corner accents, and tactical typography
+- ✅ **Cinematic Animations** – Powered by Framer Motion for staggered entrances and smooth transitions
 - ✅ **Responsive Design** – Mobile-first layouts with grid/flexbox
 - ✅ **Landing Page** – Marketing hero, feature showcase, pricing tiers, and footer
 - ✅ **RESTful API** – FastAPI backend with automatic OpenAPI documentation
 
 ### 🚧 In Progress
+- 🔄 Authentication System (Login UI & JWT Backend)
 - 🔄 Component refactoring (Hero, Features extraction)
 - 🔄 Item update endpoint (PATCH)
 - 🔄 Form validation enhancements
@@ -72,6 +74,7 @@ See the full [Roadmap](#-roadmap) below for upcoming modules like authentication
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)
+![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=flat-square&logo=framer&logoColor=white)
 ![React Router](https://img.shields.io/badge/React_Router-CA4245?style=flat-square&logo=react-router&logoColor=white)
 
 </div>
@@ -103,10 +106,10 @@ python -m venv venv
 .\venv\Scripts\Activate.ps1
 
 # Install dependencies
-pip install fastapi uvicorn sqlalchemy pydantic
+pip install fastapi uvicorn sqlalchemy pydantic bcrypt python-multipart
 
 # Run the server
-uvicorn main:app --reload
+python -m uvicorn main:app --reload
 ```
 Backend will be available at `http://127.0.0.1:8000`  
 API docs: `http://127.0.0.1:8000/docs`
@@ -146,6 +149,7 @@ hololab/
 │   │   │   └── NavBar.tsx
 │   │   ├── pages/
 │   │   │   ├── Home.tsx       # Landing page
+│   │   │   ├── Login.tsx      # Authentication
 │   │   │   └── Inventory.tsx  # Dashboard
 │   │   ├── api.ts        # API client functions
 │   │   ├── App.tsx       # Router configuration
