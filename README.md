@@ -78,11 +78,28 @@ Simply log in as `crimson_dawn` to unlock the alternate reality — complete wit
 - ✅ **Export Ready** – CSV download button (placeholder)
 - ✅ **Thematic Data** – "Tribute Ledger" vs "Imperial Treasury"
 
+#### 👥 Operatives Management
+- ✅ **Agent Grid Display** – Card-based layout with avatar images
+- ✅ **Profile Information** – Name, role, location, and cover identity
+- ✅ **Status Tracking** – Deep Cover, Compromised, Active states
+- ✅ **Avatar System** – Profile images with themed color tints and scanline effects
+- ✅ **Thematic Branding** – "Sleeper Network" vs "Personnel Registry"
+
+#### 🗺️ Heat Map (Sector Intelligence)
+- ✅ **Interactive Galaxy Map** – Click-to-select planetary nodes
+- ✅ **Real-Time Threat Tracking** – Visual risk indicators with pulse animations
+- ✅ **Info Panel** – Detailed sector reports for selected systems
+- ✅ **Dynamic Threat Levels** – Progress bars showing alert status
+- ✅ **Radial Grid Background** – Animated tactical display with coordinate overlay
+- ✅ **Thematic Intelligence** – "Galactic Heat Map" vs "Sector Security"
+
 #### 📊 Dashboard & Analytics
-- ✅ **Stat Cards** – Key metrics with trend indicators (revenue, cargo, bounties, fleet health)
-- ✅ **Revenue Chart** – Area chart with 7-day trend visualization (Recharts)
+- ✅ **Stat Cards** – Key metrics with trend indicators (active agents, credits, bounties, threat level)
+- ✅ **Conflict Chart** – Multi-line area chart showing faction influence over time (Recharts)
+- ✅ **3-Faction Visualization** – Chaos (red area), Hutts (gold dashed), Crimson Dawn (purple solid)
 - ✅ **Identity-Aware Stats** – Different KPIs for Empire vs Syndicate
 - ✅ **Real-Time Date Display** – Galactic calendar (3 ABY)
+- ✅ **Thematic Titles** – "Command Nexus" vs "Dashboard Overview"
 
 #### 🎨 UI/UX & Design
 - ✅ **Dual Theme Engine** – Complete UI transformation based on user identity
@@ -95,9 +112,10 @@ Simply log in as `crimson_dawn` to unlock the alternate reality — complete wit
 
 ### 🚧 In Progress
 - 🔄 Item **UPDATE** endpoint (PATCH) for inventory editing
-- 🔄 Backend bounty persistence (currently using mock data)
 - 🔄 Advanced form validation with error messages
 - 🔄 Export to CSV functionality for finance module
+- 🔄 Search functionality for Operatives page
+- 🔄 Sector logs viewer for Heat Map planets
 
 ### 📋 Planned Features
 See the full [Roadmap](#-roadmap) below for upcoming enhancements like PostgreSQL migration, WebSocket updates, multi-tenancy, and additional domain dashboards.
@@ -223,10 +241,12 @@ hololab/
 │   │   ├── pages/
 │   │   │   ├── Home.tsx                 # Marketing landing page
 │   │   │   ├── Login.tsx                # Authentication page
-│   │   │   ├── DashboardHome.tsx        # Main dashboard with stats + chart
+│   │   │   ├── DashboardHome.tsx        # Main dashboard with stats + conflict chart
 │   │   │   ├── Inventory.tsx            # Cargo/contraband management table
 │   │   │   ├── Eliminations.tsx         # Bounty tracking grid (targets/contracts)
-│   │   │   └── Finance.tsx              # Transaction ledger table
+│   │   │   ├── Finance.tsx              # Transaction ledger table
+│   │   │   ├── Operatives.tsx           # Agent/personnel card grid with avatars
+│   │   │   └── HeatMap.tsx              # Interactive galaxy map with threat tracking
 │   │   ├── api.ts        # Axios API client + endpoint functions
 │   │   ├── App.tsx       # React Router configuration
 │   │   └── main.tsx      # React entrypoint
@@ -277,17 +297,22 @@ Features dynamically rename ("Cargo" ↔ "Contraband", "Targets" ↔ "Contracts"
 - [x] Dual theme engine (Empire/Syndicate)
 - [x] Responsive layouts with Tailwind CSS
 - [x] Landing page with hero & pricing
-- [x] Dashboard with stat cards & analytics chart
+- [x] Dashboard with stat cards & conflict analytics chart
 - [x] Inventory management (Create, Read, Delete)
-- [x] Bounty tracking system (Eliminations page)
+- [x] Bounty tracking system with full CRUD (Eliminations page)
 - [x] Finance ledger (Transactions table)
+- [x] Operatives management (Agent grid with avatars)
+- [x] Heat Map (Interactive galaxy map with threat tracking)
 
 ### 🚧 Phase 2: Core Enhancements (Q1 2026)
 - [ ] Item **UPDATE** endpoint (PATCH) for inventory editing
-- [ ] Database persistence for bounties (replace mock data)
-- [ ] Database persistence for transactions
+- [ ] Database persistence for operatives (replace mock data)
+- [ ] Database persistence for transactions (replace mock data)
+- [ ] Database persistence for heat map planets (replace mock data)
 - [ ] Advanced form validation with error boundaries
 - [ ] CSV export functionality for finance module
+- [ ] Search & filter for operatives page
+- [ ] Sector logs viewer for heat map (detailed planet intelligence)
 - [ ] User registration page
 - [ ] Password reset flow
 - [ ] Profile settings page
@@ -299,15 +324,17 @@ Features dynamically rename ("Cargo" ↔ "Contraband", "Targets" ↔ "Contracts"
 - [ ] Centralized Tailwind theme config
 
 ### 🔮 Phase 3: Advanced Features (Q2 2026)
-- [ ] **Hyperlane Routes** – Navigation path optimization dashboard
-- [ ] **Droid Diagnostics** – Fleet health monitoring module
+- [ ] **Mission Control** – Task assignment and tracking system
+- [ ] **Supply Chain Optimization** – Route planning and logistics dashboard
 - [ ] **Reports & Analytics** – Exportable insights and projections
+- [ ] **Fleet Management** – Ship tracking and maintenance schedules
 - [ ] Role-based access control (Admin, Operator, Viewer)
 - [ ] WebSocket integration for real-time updates
 - [ ] Dark/light mode toggle (in addition to identity themes)
 - [ ] Multi-language support (i18n)
 - [ ] Advanced charts (bar, pie, line) with drill-down
 - [ ] Audit log for all CRUD operations
+- [ ] Mobile app (React Native)
 
 ### 🚀 Phase 4: Production Ready (Q3 2026)
 - [ ] PostgreSQL migration from SQLite
@@ -355,6 +382,12 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 ### Eliminations - Bounty Tracking
 <img src="https://user-images.githubusercontent.com/placeholder/bounties-screenshot.png" alt="Bounty Grid" width="700"/>
 
+### Operatives - Sleeper Network
+<img src="https://user-images.githubusercontent.com/placeholder/operatives-screenshot.png" alt="Agent Grid" width="700"/>
+
+### Heat Map - Galactic Intelligence
+<img src="https://user-images.githubusercontent.com/placeholder/heatmap-screenshot.png" alt="Threat Map" width="700"/>
+
 ### Finance Ledger
 <img src="https://user-images.githubusercontent.com/placeholder/finance-screenshot.png" alt="Transaction Table" width="700"/>
 
@@ -367,12 +400,14 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 | Feature | Empire Mode | Syndicate Mode |
 |---------|-------------|----------------|
 | **Primary Color** | Cyan (#00F0FF) | Crimson (#FF4757) |
-| **Dashboard Title** | "Cockpit Overview" | "Syndicate Command" |
+| **Dashboard Title** | "Dashboard Overview" | "Command Nexus" |
 | **Inventory** | "Cargo Logistics" | "Contraband Manifest" |
 | **Eliminations** | "Priority Targets" | "Active Contracts" |
 | **Finance** | "Imperial Treasury" | "Tribute Ledger" |
-| **Status Indicator** | Green pulse | Red pulse |
-| **Button Style** | Blue glow | Red glow |
+| **Operatives** | "Personnel Registry" | "Sleeper Network" |
+| **Heat Map** | "Sector Security" | "Galactic Heat Map" |
+| **Status Indicator** | Cyan pulse | Red pulse |
+| **Button Style** | Cyan glow | Red glow |
 
 ---
 
@@ -396,12 +431,19 @@ GET    /items/     # List all inventory items
 POST   /items/     # Create new item (requires name, description, price)
 DELETE /items/{id} # Delete item by ID
 
-# Bounties (Mock Data - Persistence Pending)
+# Bounties (SQL Database)
 GET    /bounties   # List all bounties (filtered by user type)
 PUT    /bounties/{id} # Update bounty status (Active, Hunting, Completed, etc.)
+POST   /bounties   # Create new bounty (requires name, region, reward)
 
-# Finance (Mock Data - Persistence Pending)
+# Finance (Mock Data - Persistence Planned)
 GET    /finance    # List all transactions (revenue & expenses)
+
+# Operatives (Mock Data - Persistence Planned)
+GET    /operatives # List all operatives/agents with profile data
+
+# Heat Map (Mock Data - Persistence Planned)
+GET    /heat       # List all planetary nodes with threat levels
 ```
 
 **Example Request: Create Item**
@@ -429,13 +471,16 @@ curl -X POST "http://127.0.0.1:8000/login" \
 
 - Hero image uses `scale-130` transform causing overflow on mobile (fix scheduled)
 - No **UPDATE** endpoint for inventory items yet (PATCH in progress)
-- Bounty and Finance data uses mock arrays instead of database (migration planned)
+- Finance, Operatives, and Heat Map data uses mock arrays instead of database (migration planned)
 - Deletion uses browser confirm dialog (custom modal planned for consistency)
 - No password strength validation on registration
 - CSV export button is placeholder (functionality pending)
 - Charts don't resize smoothly on mobile (Recharts responsiveness improvement needed)
-- No loading states on bounty/finance pages
+- No loading states on finance/operatives/heat map pages
 - Form validation doesn't show inline error messages yet
+- Heat map planetary nodes may overlap on smaller screens
+- Operatives page lacks search/filter functionality
+- No sector logs detail view for heat map planets yet
 
 See [Issues](https://github.com/tommyc10/hololab/issues) for full list and progress tracking.
 

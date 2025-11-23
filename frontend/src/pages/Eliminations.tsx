@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Crosshair, Skull, ShieldAlert, CheckCircle, Loader2, Plus, X, Search, Filter } from "lucide-react";
+import { Crosshair, Skull, ShieldAlert, CheckCircle, Loader2, Plus, X, Search } from "lucide-react";
 
 interface Bounty {
   id: number;

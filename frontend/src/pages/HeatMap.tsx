@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Radar, ShieldAlert, AlertTriangle, Map as MapIcon, Info } from "lucide-react";
+import { Radar, ShieldAlert, Map as MapIcon } from "lucide-react";
 
 interface Planet {
   id: number;
