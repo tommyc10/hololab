@@ -154,19 +154,28 @@ def seed_database():
             db.add_all(ops)
             db.commit()
 
-        # 6. Seed Heat Map
+# 6. Seed Heat Map
         if db.query(Planet).count() == 0:
             print("🌱 Seeding Galaxy Map...")
             planets = [
+                # Existing
                 Planet(name="Coruscant", sector="Core", coord_x=50, coord_y=50, risk="Critical", activity="Imperial Center"),
                 Planet(name="Mustafar", sector="Outer Rim", coord_x=85, coord_y=80, risk="Extreme", activity="Vader's Castle"),
                 Planet(name="Lothal", sector="Outer Rim", coord_x=75, coord_y=20, risk="Low", activity="Factory Shutdown"),
                 Planet(name="Jekara", sector="Unknown", coord_x=20, coord_y=30, risk="High", activity="The Auction"),
                 Planet(name="Kessel", sector="Outer Rim", coord_x=85, coord_y=40, risk="Medium", activity="Pyke Operations"),
                 Planet(name="Dathomir", sector="Outer Rim", coord_x=60, coord_y=70, risk="High", activity="Nightsister Magic"),
+                
+                # NEW CRIMSON DAWN LOCATIONS
+                Planet(name="Corellia", sector="Core", coord_x=52, coord_y=48, risk="High", activity="Shipyard Sabotage"),
+                Planet(name="Nar Shaddaa", sector="Hutt Space", coord_x=80, coord_y=35, risk="High", activity="Smuggler's Moon"),
+                Planet(name="Cantonica", sector="Corporate", coord_x=10, coord_y=15, risk="Low", activity="Money Laundering"),
+                Planet(name="Savareen", sector="Outer Rim", coord_x=92, coord_y=85, risk="Medium", activity="Refinery Outpost"),
+                Planet(name="Tatooine", sector="Outer Rim", coord_x=88, coord_y=25, risk="Extreme", activity="Hutt Surveillance"),
             ]
             db.add_all(planets)
             db.commit()
+
 
         if db.query(Item).count() == 0:
             print("🌱 Seeding Contraband Manifest...")

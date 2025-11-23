@@ -1,166 +1,204 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Radar, ShieldAlert, Map as MapIcon } from "lucide-react";
-
-interface Planet {
-  id: number;
-  name: string;
-  sector: string;
-  coords: [number, number]; // x, y percentages
-  risk: string;
-  activity: string;
-}
+import { Radar, Target, Map as MapIcon, ShieldAlert, Activity, Navigation } from "lucide-react";
+import { getHeatMap } from "../api";
+import type { Planet } from "../api";
 
 export default function HeatMap() {
   const [planets, setPlanets] = useState<Planet[]>([]);
   const [selectedPlanet, setSelectedPlanet] = useState<Planet | null>(null);
-  
-  const username = localStorage.getItem("username");
-  const isSyndicate = username === "crimson_dawn";
+  const [, setLoading] = useState(true);
 
   // THEME
-  const theme = isSyndicate
-    ? {
-        text: "text-red-500",
-        mapBg: "bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-red-900/10 via-black to-black",
-        grid: "border-red-900/20",
-        nodeSafe: "bg-red-900/50 border-red-800",
-        nodeCritical: "bg-red-500 border-red-400 shadow-[0_0_20px_rgba(239,68,68,0.6)]",
-        panel: "border-red-900 bg-red-950/20"
-      }
-    : {
-        text: "text-cyan-400",
-        mapBg: "bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-cyan-900/10 via-black to-black",
-        grid: "border-cyan-900/20",
-        nodeSafe: "bg-cyan-900/50 border-cyan-800",
-        nodeCritical: "bg-orange-500 border-orange-400 shadow-[0_0_20px_rgba(249,115,22,0.6)]",
-        panel: "border-cyan-900 bg-slate-900/50"
-      };
+  const theme = {
+    text: "text-red-500",
+    border: "border-red-900/50",
+    grid: "border-red-900/20",
+    bg: "bg-red-950/20",
+    glow: "shadow-[0_0_15px_rgba(220,38,38,0.5)]",
+    riskHigh: "bg-red-600 shadow-red-500/50",
+    riskMed: "bg-orange-500 shadow-orange-500/50",
+    riskLow: "bg-emerald-500 shadow-emerald-500/50",
+  };
 
   useEffect(() => {
-    fetch("http://localhost:8000/heat")
-      .then(res => res.json())
-      .then(data => setPlanets(data));
+    async function loadData() {
+      try {
+        const data = await getHeatMap();
+        setPlanets(data);
+        // Default select Coruscant or the first one
+        if (data.length > 0) setSelectedPlanet(data.find(p => p.name === "Coruscant") || data[0]);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
   }, []);
 
+  const getRiskColor = (risk: string) => {
+    if (risk === "Critical" || risk === "Extreme") return theme.riskHigh;
+    if (risk === "High" || risk === "Medium") return theme.riskMed;
+    return theme.riskLow;
+  };
+
   return (
-    <div className="p-8 h-[calc(100vh-2rem)] flex flex-col">
+    <div className="p-8 space-y-8 min-h-screen relative overflow-hidden">
       
       {/* HEADER */}
-      <div className="flex justify-between items-end mb-6">
+      <header className="flex items-center gap-4 border-b border-gray-800 pb-6 z-10 relative">
+        <Radar className={`w-10 h-10 ${theme.text} animate-pulse`} />
         <div>
-          <h1 className={`text-3xl font-black uppercase tracking-widest ${theme.text} flex items-center gap-3`}>
-            <Radar className={isSyndicate ? "animate-spin-slow" : ""} />
-            {isSyndicate ? "Galactic Heat Map" : "Sector Security"}
-          </h1>
-          <p className="text-gray-500 text-sm font-mono mt-1">
-            Real-time transponder tracking // Cycle 3 ABY
-          </p>
+          <h1 className={`text-3xl font-black uppercase tracking-widest ${theme.text}`}>Galactic Heat Map</h1>
+          <p className="text-gray-500 text-sm font-mono tracking-wider">:: Real-time Transponder Tracking // Cycle 3 ABY</p>
         </div>
-        
-        {/* LEGEND */}
-        <div className="flex gap-4 text-xs font-mono text-gray-400">
-          <div className="flex items-center gap-2">
-            <div className={`w-3 h-3 rounded-full ${isSyndicate ? 'bg-red-900' : 'bg-cyan-900'}`} />
-            {isSyndicate ? "Clear" : "Secure"}
-          </div>
-          <div className="flex items-center gap-2">
-             <div className={`w-3 h-3 rounded-full animate-pulse ${isSyndicate ? 'bg-red-500' : 'bg-orange-500'}`} />
-             {isSyndicate ? "Imp. Blockade" : "Rebel Activity"}
-          </div>
-        </div>
-      </div>
+      </header>
 
-      <div className="flex flex-1 gap-6 min-h-0">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 h-[70vh]">
         
-        {/* THE MAP (Flex Grow) */}
-        <div className={`relative flex-1 rounded-xl border ${theme.grid} ${theme.mapBg} overflow-hidden shadow-2xl`}>
+        {/* --- THE MAP (Take up 3/4 space) --- */}
+        <div className={`relative lg:col-span-3 rounded-xl border ${theme.border} bg-black/60 overflow-hidden group`}>
           
-          {/* Decorative Grid Lines */}
-          <div className={`absolute inset-0 opacity-20`} 
-               style={{ backgroundImage: `linear-gradient(${isSyndicate ? '#450a0a' : '#164e63'} 1px, transparent 1px), linear-gradient(90deg, ${isSyndicate ? '#450a0a' : '#164e63'} 1px, transparent 1px)`, backgroundSize: '50px 50px' }}>
+          {/* 1. BACKGROUND GRID (The "Graph Paper" look) */}
+          <div className="absolute inset-0" 
+            style={{ 
+              backgroundImage: `linear-gradient(to right, #330505 1px, transparent 1px), linear-gradient(to bottom, #330505 1px, transparent 1px)`,
+              backgroundSize: '40px 40px',
+              opacity: 0.3
+            }} 
+          />
+
+          {/* 2. RADAR SWEEP ANIMATION */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <motion.div 
+              animate={{ rotate: 360 }}
+              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+              className="w-[150%] h-[150%] bg-linear-to-b from-transparent via-red-900/10 to-transparent border-r border-red-500/20 origin-center"
+              style={{ borderRadius: '50%' }}
+            />
           </div>
 
-          {/* PLANET NODES */}
-          {planets.map((planet) => {
-            const isCritical = planet.risk === "Critical" || planet.risk === "High";
-            
+          {/* 3. HYPERSPACE LANES (Connecting Lines) */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-30">
+            {planets.map((p1, i) => (
+              planets.map((p2, j) => {
+                // Draw line if they are relatively close (Simulating trade routes)
+                const dist = Math.sqrt(Math.pow(p1.coords[0] - p2.coords[0], 2) + Math.pow(p1.coords[1] - p2.coords[1], 2));
+                if (i < j && dist < 45) {
+                  return (
+                    <line 
+                      key={`${i}-${j}`}
+                      x1={`${p1.coords[0]}%`} y1={`${p1.coords[1]}%`}
+                      x2={`${p2.coords[0]}%`} y2={`${p2.coords[1]}%`}
+                      stroke="#EF4444" 
+                      strokeWidth="1"
+                      strokeDasharray="4 4"
+                    />
+                  );
+                }
+                return null;
+              })
+            ))}
+          </svg>
+
+          {/* 4. PLANET NODES */}
+          {planets.map((p) => {
+            const isSelected = selectedPlanet?.id === p.id;
+            const riskColor = getRiskColor(p.risk);
+
             return (
-              <motion.button
-                key={planet.id}
-                onClick={() => setSelectedPlanet(planet)}
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                whileHover={{ scale: 1.2 }}
-                style={{ left: `${planet.coords[0]}%`, top: `${planet.coords[1]}%` }}
-                className={`absolute w-4 h-4 -ml-2 -mt-2 rounded-full border-2 cursor-pointer transition-colors z-10
-                  ${isCritical ? theme.nodeCritical : theme.nodeSafe}
-                `}
+              <button
+                key={p.id}
+                onClick={() => setSelectedPlanet(p)}
+                className="absolute transform -translate-x-1/2 -translate-y-1/2 group/node focus:outline-none"
+                style={{ left: `${p.coords[0]}%`, top: `${p.coords[1]}%` }}
               >
-                {/* Ping Animation for Critical planets */}
-                {isCritical && (
-                  <span className={`absolute -inset-2 rounded-full opacity-30 animate-ping ${isSyndicate ? 'bg-red-500' : 'bg-orange-500'}`} />
+                {/* Danger Aura for Critical Planets */}
+                {(p.risk === "Critical" || p.risk === "Extreme") && (
+                  <div className="absolute inset-0 bg-red-500/20 rounded-full blur-xl w-16 h-16 -ml-6 -mt-6 animate-pulse pointer-events-none"></div>
                 )}
-                
-                {/* Label */}
-                <span className={`absolute top-6 left-1/2 -translate-x-1/2 text-[10px] font-mono whitespace-nowrap uppercase tracking-wider
-                  ${selectedPlanet?.id === planet.id ? 'text-white font-bold' : 'text-gray-500'}
+
+                {/* The Dot */}
+                <div className={`
+                  w-4 h-4 rounded-full border border-black transition-all duration-300 relative z-10
+                  ${riskColor} ${isSelected ? 'scale-150 ring-2 ring-white' : 'opacity-80 hover:opacity-100 hover:scale-125'}
                 `}>
-                  {planet.name}
-                </span>
-              </motion.button>
+                  {/* Ping Animation ring */}
+                  <span className={`absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping ${riskColor}`}></span>
+                </div>
+
+                {/* Label (Visible on Hover or Select) */}
+                <div className={`
+                  absolute top-6 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] font-mono uppercase tracking-widest transition-opacity
+                  ${isSelected ? 'opacity-100 font-bold text-white' : 'opacity-60 text-gray-400 group-hover/node:opacity-100'}
+                `}>
+                  {p.name}
+                </div>
+              </button>
             );
           })}
         </div>
 
-        {/* INFO PANEL (Fixed Width) */}
-        <div className={`w-80 rounded-xl border p-6 backdrop-blur-md ${theme.panel}`}>
+        {/* --- SIDEBAR: SECTOR INTEL --- */}
+        <div className={`lg:col-span-1 p-6 rounded-xl border ${theme.border} ${theme.bg} backdrop-blur-sm relative`}>
           {selectedPlanet ? (
-            <motion.div 
-              key={selectedPlanet.id}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-            >
-              <h2 className={`text-2xl font-bold uppercase ${theme.text} mb-1`}>{selectedPlanet.name}</h2>
-              <p className="text-gray-500 text-xs uppercase tracking-widest mb-6 border-b border-gray-700 pb-2">
-                {selectedPlanet.sector} Sector
-              </p>
+            <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
+              <div>
+                <h2 className="text-4xl font-black text-white uppercase">{selectedPlanet.name}</h2>
+                <p className="text-red-400 font-mono text-xs tracking-[0.2em] mt-1">{selectedPlanet.sector} SECTOR</p>
+              </div>
 
-              <div className="space-y-6">
+              <div className="space-y-4 pt-4 border-t border-red-900/30">
                 <div>
-                  <span className="text-gray-500 text-xs block mb-1">Status Report</span>
-                  <div className={`text-lg font-mono flex items-center gap-2 ${selectedPlanet.risk === 'Critical' ? 'text-red-400' : 'text-gray-300'}`}>
-                    <ShieldAlert size={18} />
-                    {selectedPlanet.activity}
+                  <label className="text-gray-500 text-[10px] uppercase font-mono mb-1 flex items-center gap-2">
+                    <ShieldAlert size={12} /> Threat Assessment
+                  </label>
+                  <div className={`text-lg font-bold ${selectedPlanet.risk === 'Critical' ? 'text-red-500' : 'text-amber-500'}`}>
+                    {selectedPlanet.risk.toUpperCase()}
                   </div>
-                </div>
-
-                <div>
-                  <span className="text-gray-500 text-xs block mb-1">Threat Level</span>
-                  <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                  {/* Risk Bar */}
+                  <div className="w-full bg-gray-900 h-1 mt-2 rounded-full overflow-hidden">
                     <div 
-                      className={`h-full ${isSyndicate ? 'bg-red-500' : 'bg-cyan-500'}`} 
-                      style={{ width: selectedPlanet.risk === 'Critical' ? '100%' : selectedPlanet.risk === 'High' ? '75%' : '25%' }}
-                    />
-                  </div>
-                  <div className="flex justify-between text-[10px] text-gray-500 font-mono mt-1">
-                    <span>LOW</span>
-                    <span>CRITICAL</span>
+                      className={`h-full ${selectedPlanet.risk === 'Critical' ? 'bg-red-500' : 'bg-amber-500'}`} 
+                      style={{ width: selectedPlanet.risk === 'Critical' ? '95%' : '60%' }}
+                    ></div>
                   </div>
                 </div>
-                
-                <button className={`w-full py-2 mt-4 text-xs font-bold uppercase border rounded hover:bg-white/5 transition-colors ${theme.text} ${isSyndicate ? 'border-red-900' : 'border-cyan-900'}`}>
-                  View Sector Logs
+
+                <div>
+                  <label className="text-gray-500 text-[10px] uppercase font-mono mb-1 flex items-center gap-2">
+                    <Activity size={12} /> Local Activity
+                  </label>
+                  <div className="text-white text-sm font-mono leading-relaxed">
+                    "{selectedPlanet.activity}"
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-gray-500 text-[10px] uppercase font-mono mb-1 flex items-center gap-2">
+                    <Navigation size={12} /> Coordinates
+                  </label>
+                  <div className="font-mono text-xs text-gray-400">
+                    X: {selectedPlanet.coords[0].toFixed(4)} // Y: {selectedPlanet.coords[1].toFixed(4)}
+                  </div>
+                </div>
+              </div>
+
+              <div className="absolute bottom-6 left-6 right-6">
+                <button className="w-full py-3 border border-red-500/50 text-red-500 hover:bg-red-500 hover:text-white transition-all text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2">
+                  <MapIcon size={14} /> View Sector Logs
                 </button>
               </div>
-            </motion.div>
+            </div>
           ) : (
-            <div className="h-full flex flex-col items-center justify-center text-gray-600 space-y-4">
-              <MapIcon size={48} className="opacity-20" />
-              <p className="text-center text-xs font-mono">SELECT A SYSTEM TO<br/>VIEW INTELLIGENCE</p>
+            <div className="h-full flex flex-col items-center justify-center text-gray-600 space-y-4 opacity-50">
+              <Target size={48} className="animate-pulse" />
+              <p className="font-mono text-xs uppercase tracking-widest">Select a system</p>
             </div>
           )}
         </div>
+
       </div>
     </div>
   );
