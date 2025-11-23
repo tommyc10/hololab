@@ -1,6 +1,5 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { GridBackground } from '../components/layout/GridBackground';
 import { useState } from 'react';
 
 export function Login() {
@@ -47,8 +46,25 @@ export function Login() {
   };
 
   return (
-    <GridBackground>
-      <div className="min-h-screen flex items-center justify-center px-4">
+    <div className="relative min-h-screen flex items-center justify-center px-4 overflow-hidden">
+      
+      {/* Layer 0: Background Image */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="/terminalaccess.png" 
+          alt="Terminal Access" 
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      {/* Layer 1: Dark Overlay with Blur */}
+      <div className="absolute inset-0 z-10 bg-black/80 backdrop-blur-sm"></div>
+
+      {/* Layer 2: Grid Texture */}
+      <div className="absolute inset-0 z-20 opacity-10 bg-[linear-gradient(rgba(0,240,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(0,240,255,0.1)_1px,transparent_1px)] bg-size-[50px_50px]"></div>
+
+      {/* Layer 3: Content */}
+      <div className="relative z-30">
         
         {/* The Glass Card */}
         <div className="w-full max-w-md bg-empire-black/60 backdrop-blur-xl border border-white/10 p-8 rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.5)] relative overflow-hidden">
@@ -106,6 +122,6 @@ export function Login() {
 
         </div>
       </div>
-    </GridBackground>
+    </div>
   );
 }

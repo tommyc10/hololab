@@ -65,7 +65,7 @@ export function Home() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <img 
-            src="/hero.png" 
+            src="/heroimage2.png" 
             alt="Hololab Interface" 
             className="w-full h-full object-cover"
           />
