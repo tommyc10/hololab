@@ -14,7 +14,7 @@ from models import Bounty, Transaction, Operative, Planet, User, Item
 # 1. CREATE DATABASE TABLES
 models.Base.metadata.create_all(bind=database.engine)
 
-# 2. DEFINE APP & MIDDLEWARE (Must be at the top)
+# 2. DEFINE APP & MIDDLEWARE
 app = FastAPI()
 
 origins = [
@@ -38,8 +38,7 @@ def get_db():
     finally:
         db.close()
 
-# 4. PYDANTIC SCHEMAS (Data Validation Models)
-# We define these here so the API knows what JSON format to send back
+# 4. PYDANTIC SCHEMAS
 class BountySchema(BaseModel):
     id: int
     name: str
@@ -80,85 +79,108 @@ class PlanetSchema(BaseModel):
     id: int
     name: str
     sector: str
-    coords: List[int] # Expecting [x, y]
+    coords: List[int] 
     risk: str
     activity: str
     class Config:
         from_attributes = True
 
-# 5. SEEDING FUNCTIONS
+# 5. SEEDING FUNCTIONS (UPDATED FOR CRIMSON DAWN LORE)
 def seed_database():
     db = SessionLocal()
     try:
-        # Seed Crimson Dawn User
+        # 1. Seed Crimson Dawn User
         existing_user = db.query(User).filter(User.username == "crimson_dawn").first()
         if not existing_user:
             print("⚡ CREATING CRIMSON DAWN ADMIN ACCOUNT...")
             syndicate_admin = User(username="crimson_dawn", hashed_password=Hash.bcrypt("syndicate"))
             db.add(syndicate_admin)
             db.commit()
-     # 2. Seed Admin
+            
+        # 2. Seed Empire Admin
         existing_admin = db.query(User).filter(User.username == "admin").first()
         if not existing_admin:
             print("⚡ CREATING EMPIRE ADMIN ACCOUNT...")
-            # username: admin, password: admin
             admin_user = User(username="admin", hashed_password=Hash.bcrypt("admin"))
             db.add(admin_user)
             db.commit()
-            
-        # Seed Bounties
+
+        # 3. Seed Bounties (UPDATED)
         if db.query(Bounty).count() == 0:
-            print("🌱 Seeding Bounties...")
+            print("🌱 Seeding Bounties (Crimson Reign Era)...")
             bounties = [
+                # The Auction for Han Solo
                 Bounty(name="Gen. Han Solo (Carbonite)", region="The Vermillion", reward=10000000, status="Auction", type="Syndicate"),
-                Bounty(name="Boba Fett", region="Nar Shaddaa", reward=500000, status="High Priority", type="Syndicate"),
-                Bounty(name="Governor Pryce", region="Lothal", reward=50000, status="Active", type="Syndicate"),
-                Bounty(name="Vizago", region="Outer Rim", reward=12000, status="Completed", type="Syndicate"),
-                Bounty(name="Qi'ra", region="Unknown", reward=1000000, status="Active", type="Empire"),
-                Bounty(name="Luke Skywalker", region="Jekara Sector", reward=500000, status="Active", type="Empire"),
+                # The Interception Target
+                Bounty(name="Boba Fett", region="Jekara Sector", reward=500000, status="Intercept", type="Syndicate"),
+                # The Political Target
+                Bounty(name="Sly Moore", region="Coruscant", reward=0, status="Hunting", type="Syndicate"), # 0 reward = Ideological target
+                # The Hired Muscle
+                Bounty(name="Zuckuss & 4-LOM", region="Outer Rim", reward=75000, status="Hired", type="Syndicate"),
+                # The Ultimate Goal (Chaos)
+                Bounty(name="Darth Vader", region="Mustafar", reward=99999999, status="Avoid", type="Syndicate"),
+                # Legacy Targets
+                Bounty(name="Luke Skywalker", region="Unknown", reward=500000, status="Active", type="Empire"),
+                Bounty(name="Mon Mothma", region="Chandrila", reward=100000, status="Active", type="Empire"),
             ]
             db.add_all(bounties)
             db.commit()
 
-        # Seed Transactions
+        # 4. Seed Transactions (UPDATED)
         if db.query(Transaction).count() == 0:
             print("🌱 Seeding Finance Ledger...")
             txs = [
-                Transaction(description="Sector 7 Tax Collection", amount=1500000, date="2025-10-01", category="Revenue"),
-                Transaction(description="TIE Defender Research", amount=-450000, date="2025-10-02", category="R&D"),
-                Transaction(description="Spice Shipment (Kessel)", amount=300000, date="3 ABY-04-14", category="Smuggling"),
-                Transaction(description="Port Authority Bribe", amount=-15000, date="3 ABY-04-14", category="Overhead"),
-                Transaction(description="Jabba's Entry Fee", amount=100000, date="3 ABY-04-15", category="Auction"),
-                Transaction(description="Security Droids (Vermillion)", amount=-45000, date="3 ABY-04-14", category="Defense"),
+                Transaction(description="Pyke Syndicate Tribute", amount=1500000, date="3 ABY-05-01", category="Revenue"),
+                Transaction(description="Black Sun Bribe", amount=-450000, date="3 ABY-05-02", category="Diplomacy"),
+                Transaction(description="Hylobon Enforcers (Retainer)", amount=-150000, date="3 ABY-05-04", category="Defense"),
+                Transaction(description="Sale of Hutt Spice Routes", amount=3000000, date="3 ABY-05-10", category="Revenue"),
+                Transaction(description="Information Purchase (Renegade)", amount=-25000, date="3 ABY-05-12", category="Intel"),
+                Transaction(description="Vermillion Fuel Resupply", amount=-45000, date="3 ABY-05-14", category="Overhead"),
             ]
             db.add_all(txs)
             db.commit()
 
-        # Seed Operatives
+        # 5. Seed Operatives (UPDATED - THE SLEEPER NETWORK)
         if db.query(Operative).count() == 0:
-            print("🌱 Seeding Spy Network...")
+            print("🌱 Seeding Sleeper Network...")
             ops = [
+                Operative(name="Qi'ra", location="The Vermillion", role="Syndicate Leader", status="Active", cover="Lady of the Dawn", image="/operatives/qira.jpg"),
                 Operative(name="Margo", location="The Vermillion", role="Comms Officer", status="Active", cover="N/A", image="/operatives/margo.jpg"),
-                Operative(name="Unit 88", location="Imperial Palace", role="Informant", status="Deep Cover", cover="Protocol Droid", image="/operatives/unit88.jpg"),
-                Operative(name="Beilert Valance", location="Executor", role="Unwitting Asset", status="Compromised", cover="Bounty Hunter", image="/operatives/beilertvalance.jpg"),
-                Operative(name="Ochi of Bestoon", location="Outer Rim", role="Assassin", status="Active", cover="Sith Loyalist", image="/operatives/ochi.jpg"),
-                Operative(name="Admiral Piett", location="Executor", role="Admiral", status="Active", cover="N/A", image="/operatives/piett.jpg"),
+                Operative(name="Ochi of Bestoon", location="Outer Rim", role="Assassin", status="Hunting", cover="Sith Loyalist", image="/operatives/ochi.jpg"),
+                Operative(name="Deathstick", location="Coruscant", role="Enforcer", status="Active", cover="Assassin", image="/operatives/deathstick.jpg"),
+                Operative(name="The Archivist", location="Unknown Regions", role="Scholar", status="Researching", cover="Sava Madelin Sun", image="/operatives/archivist.jpg"),
+                Operative(name="Bokku the Hutt", location="Jekara", role="Inside Man", status="Sleeper", cover="Hutt Council", image="/operatives/bokku.jpg"),
             ]
             db.add_all(ops)
             db.commit()
 
-        # Seed Heat Map
+        # 6. Seed Heat Map
         if db.query(Planet).count() == 0:
             print("🌱 Seeding Galaxy Map...")
             planets = [
                 Planet(name="Coruscant", sector="Core", coord_x=50, coord_y=50, risk="Critical", activity="Imperial Center"),
-                Planet(name="Tatooine", sector="Outer Rim", coord_x=80, coord_y=80, risk="Medium", activity="Hutt Dispute"),
+                Planet(name="Mustafar", sector="Outer Rim", coord_x=85, coord_y=80, risk="Extreme", activity="Vader's Castle"),
                 Planet(name="Lothal", sector="Outer Rim", coord_x=75, coord_y=20, risk="Low", activity="Factory Shutdown"),
-                Planet(name="Jekara", sector="Unknown", coord_x=20, coord_y=30, risk="Critical", activity="Crimson Dawn Auction"),
-                Planet(name="Kessel", sector="Outer Rim", coord_x=85, coord_y=40, risk="High", activity="Spice Lane Patrols"),
-                Planet(name="Corellia", sector="Core", coord_x=55, coord_y=60, risk="High", activity="Shipyard Inspection"),
+                Planet(name="Jekara", sector="Unknown", coord_x=20, coord_y=30, risk="High", activity="The Auction"),
+                Planet(name="Kessel", sector="Outer Rim", coord_x=85, coord_y=40, risk="Medium", activity="Pyke Operations"),
+                Planet(name="Dathomir", sector="Outer Rim", coord_x=60, coord_y=70, risk="High", activity="Nightsister Magic"),
             ]
             db.add_all(planets)
+            db.commit()
+
+        if db.query(Item).count() == 0:
+            print("🌱 Seeding Contraband Manifest...")
+            items = [
+                Item(name="Coaxium (Unrefined)", description="Highly volatile hyperfuel. Explosion risk: Critical.", price=300000),
+                Item(name="Glitterstim Spice", description="Pure telepathic booster. Stolen from Pyke Syndicate transport.", price=45000),
+                Item(name="DXR-6 Disruptor Rifle", description="Banned prototype. Disintegrates targets on impact.", price=15000),
+                Item(name="Mandalorian Rally Armor", description="Ancient Neo-Crusader plating. Beskar alloy.", price=5000000),
+                Item(name="Sith Holocron", description="Inactive dark side artifact. Radiates cold energy.", price=10000000),
+                Item(name="Rafa Life Crystals", description="Life-extending minerals. Origin: Unknown Regions.", price=250000),
+                Item(name="Trihexalon Canister", description="Biological weapon agent. Code name: Dragon's Breath.", price=75000),
+                Item(name="Hylobon Enforcer Droid", description="Security unit with illegal combat protocols.", price=12000),
+            ]
+            db.add_all(items)
             db.commit()
             
     except Exception as e:

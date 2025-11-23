@@ -1,51 +1,65 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Users, EyeOff } from "lucide-react";
-
-interface Operative {
-  id: number;
-  name: string;
-  location: string;
-  role: string;
-  status: string;
-  cover: string;
-  image: string; // <--- 1. ADDED THIS
-}
+import { getOperatives, type Operative } from "../api"; // Importing from your clean API file
 
 export default function Operatives() {
   const [operatives, setOperatives] = useState<Operative[]>([]);
+  const [loading, setLoading] = useState(true);
+  
   const username = localStorage.getItem("username");
   const isSyndicate = username === "crimson_dawn";
 
-  // THEME CONFIG
+  // 1. SIMPLE THEME CONFIG OBJECT
+  // This keeps your JSX clean by hiding the color logic here
   const theme = isSyndicate 
     ? { 
         title: "Sleeper Network", 
         subtitle: "EYES EVERYWHERE",
         text: "text-red-500", 
-        border: "border-red-900", 
-        bg: "bg-red-950/10", 
+        border: "border-red-900/50", 
+        bg: "bg-red-950/20", 
         icon: EyeOff,
-        cardGlow: "hover:shadow-red-900/40"
+        glow: "hover:shadow-[0_0_15px_rgba(220,38,38,0.3)]"
       }
     : { 
         title: "Personnel Registry", 
         subtitle: "IMPERIAL STAFFING",
         text: "text-cyan-400", 
-        border: "border-cyan-900", 
+        border: "border-cyan-900/50", 
         bg: "bg-slate-900/50", 
         icon: Users,
-        cardGlow: "hover:shadow-cyan-900/40"
+        glow: "hover:shadow-[0_0_15px_rgba(6,182,212,0.3)]"
       };
 
+  // 2. DATA FETCHING
+  // Using the function from api.ts keeps this component focused on UI, not networking
   useEffect(() => {
-    fetch("http://localhost:8000/operatives")
-      .then(res => res.json())
-      .then(data => setOperatives(data));
+    async function loadData() {
+      try {
+        const data = await getOperatives();
+        setOperatives(data);
+      } catch (error) {
+        console.error("Failed to load agents", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
   }, []);
+
+  // 3. IMAGE HELPER
+  // Handles missing images gracefully
+  const getImageUrl = (path: string | null, name: string) => {
+    if (!path) return `https://ui-avatars.com/api/?name=${name}&background=000&color=fff`;
+    return path; // This assumes images are in public/ folder
+  };
+
+  if (loading) return <div className={`p-8 ${theme.text} animate-pulse`}>DECRYPTING FILES...</div>;
 
   return (
     <div className="p-8 space-y-8 min-h-screen">
+      {/* HEADER */}
       <header className="flex items-center gap-4 border-b border-gray-800 pb-6">
         <theme.icon className={`w-10 h-10 ${theme.text}`} />
         <div>
@@ -58,69 +72,64 @@ export default function Operatives() {
         </div>
       </header>
 
+      {/* GRID */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {operatives.map((agent, i) => (
           <motion.div
             key={agent.id}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className={`p-6 border rounded-xl backdrop-blur-sm flex items-start gap-4 transition-shadow duration-300 hover:shadow-lg
-              ${theme.border} ${theme.bg} ${theme.cardGlow}`}
+            className={`
+              relative overflow-hidden p-4 rounded-xl border backdrop-blur-md group transition-all duration-300
+              ${theme.border} ${theme.bg} ${theme.glow}
+            `}
           >
-            
-            {/* --- 2. START OF AVATAR IMAGE LOGIC --- */}
-            <div className={`relative w-16 h-16 rounded-full overflow-hidden border-2 ${theme.border} shrink-0 bg-black group`}>
+            {/* Scanline Background Effect */}
+            <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-size-[100%_4px] pointer-events-none opacity-20" />
+
+            <div className="flex items-start gap-4 relative z-10">
               
-              {/* The Image itself */}
-              <img 
-                src={agent.image} 
-                alt={agent.name}
-                className="w-full h-full object-cover grayscale contrast-125 brightness-110 group-hover:grayscale-0 transition-all duration-500"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${agent.name}&background=000&color=fff`;
-                }}
-              />
-              
-              {/* Color Tint (Red or Blue) */}
-              <div className={`absolute inset-0 mix-blend-color ${isSyndicate ? 'bg-red-600' : 'bg-cyan-500'} opacity-50 group-hover:opacity-0 transition-opacity duration-500`}></div>
-
-              {/* Scanline Texture */}
-              <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,1)_50%)] bg-size-[100%_3px] pointer-events-none opacity-40"></div>
-            </div>
-            {/* --- END OF AVATAR IMAGE LOGIC --- */}
-
-
-            {/* 3. TEXT DETAILS (This remains the same) */}
-            <div className="flex-1 w-full">
-              <div className="flex justify-between items-start">
-                <h3 className="font-bold text-white text-lg leading-none mb-1">{agent.name}</h3>
-                
-                {/* Status Badge */}
-                <div className={`text-[10px] font-bold px-2 py-0.5 rounded border uppercase
-                  ${agent.status === 'Compromised' ? 'border-red-500 text-red-500 bg-red-500/10' : 
-                    agent.status === 'Deep Cover' ? 'border-purple-500 text-purple-500 bg-purple-500/10' : 
-                    `border-gray-600 text-gray-400`}`}
-                >
-                  {agent.status}
-                </div>
+              {/* AVATAR */}
+              <div className={`w-20 h-20 rounded-lg overflow-hidden border ${theme.border} shrink-0 bg-black`}>
+                <img 
+                  src={getImageUrl(agent.image, agent.name)} 
+                  alt={agent.name}
+                  className="w-full h-full object-cover filter sepia-[.5] contrast-125 group-hover:sepia-0 transition-all duration-500"
+                />
               </div>
 
-              <p className={`text-xs ${theme.text} font-mono uppercase mb-4`}>{agent.role}</p>
-
-              {/* Details */}
-              <div className="space-y-1 text-xs text-gray-400 font-mono border-t border-gray-800 pt-3">
-                <div className="flex justify-between">
-                  <span>LOCATION:</span>
-                  <span className="text-gray-300">{agent.location}</span>
+              {/* TEXT INFO */}
+              <div className="flex-1 min-w-0">
+                <div className="flex justify-between items-start mb-1">
+                  <h3 className="font-bold text-white text-lg truncate pr-2">{agent.name}</h3>
+                  
+                  {/* Status Badge */}
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded border uppercase whitespace-nowrap
+                    ${agent.status === 'Compromised' ? 'border-yellow-600 text-yellow-500 bg-yellow-500/10' : 
+                      agent.status === 'Sleeper' ? 'border-purple-600 text-purple-400 bg-purple-500/10' : 
+                      `${theme.border} ${theme.text}`}`}
+                  >
+                    {agent.status}
+                  </span>
                 </div>
-                <div className="flex justify-between">
-                  <span>COVER:</span>
-                  <span className="text-gray-300">{agent.cover}</span>
+
+                <p className={`text-xs ${theme.text} font-mono uppercase tracking-wider mb-3`}>
+                  {agent.role}
+                </p>
+
+                <div className="space-y-1 text-xs text-gray-400 font-mono border-t border-gray-700/50 pt-2">
+                  <div className="flex justify-between">
+                    <span>LOC:</span>
+                    <span className="text-gray-200">{agent.location}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>CVR:</span>
+                    <span className="text-gray-200">{agent.cover}</span>
+                  </div>
                 </div>
               </div>
             </div>
-
           </motion.div>
         ))}
       </div>

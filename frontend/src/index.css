@@ -9,25 +9,25 @@
 
 @theme {
   /* THE VOID: Backgrounds */
-  --color-empire-black: #050505;     /* Main Page Background */
-  --color-void-gray: #121212;        /* Card/Section Backgrounds */
+  --color-empire-black: #050505;
+  --color-void-gray: #121212;
   
   /* THE LIGHT: Text & Accents */
-  --color-hologram-blue: #00F0FF;    /* Primary Actions, Links, Glows */
-  --color-tatooine-sand: #FFD580;    /* Warnings, Secondary Text */
-  --color-sith-red: #FF3333;         /* Delete, Errors, Alerts */
-  --color-yoda-green: #33FF57;       /* Success, Money, Positive Trends */
+  --color-hologram-blue: #00F0FF;    /* Use for: HIRED */
+  --color-tatooine-sand: #FFD580;    /* Use for: HUNTING */
+  --color-sith-red: #FF3333;         /* Use for: AVOID */
+  --color-yoda-green: #33FF57;       /* Use for: MONEY/SUCCESS */
 
+  /* NEW COLORS FOR STATUSES */
+  --color-neon-purple: #D946EF;      /* Use for: AUCTION */
+  --color-thermal-orange: #F97316;   /* Use for: INTERCEPT */
 
-    /* CRIMSON DAWN SYNDICATE PALETTE */
-  --color-crimson-light: #FF0033;    /* The bright, dangerous laser red */
-  --color-crimson-dark: #4A0404;     /* The deep, blood-red background */
-  --color-syndicate-gold: #D4AF37;   /* The luxury gold accent */
+  /* CRIMSON DAWN SYNDICATE PALETTE */
+  --color-crimson-light: #FF0033;
+  --color-crimson-dark: #4A0404;
+  --color-syndicate-gold: #D4AF37;
   
-  /* THE UI: Borders & Glass */
   --color-glass-border: rgba(0, 240, 255, 0.2);
-
-  /* FONTS */
   --font-death-star: 'Death Star', sans-serif;
 }
 
