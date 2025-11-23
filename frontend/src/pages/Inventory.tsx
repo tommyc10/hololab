@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Package, Plus, Trash2, Search } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Plus } from 'lucide-react';
 import { AddItemModal } from '../components/inventory/AddItemModal';
 
 // Define the shape of our Cargo
