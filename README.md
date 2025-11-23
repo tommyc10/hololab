@@ -22,13 +22,24 @@
 
 ## 🎯 Overview
 
-**Hololab** is a full-stack inventory management platform wrapped in a meticulously crafted Star Wars aesthetic. Blending Death Star control-room vibes with modern SaaS functionality, it transforms mundane CRUD operations into an immersive tactical experience.
+**Hololab** is a full-stack business operations platform wrapped in a meticulously crafted Star Wars aesthetic. Blending Death Star control-room vibes with modern SaaS functionality, it transforms mundane business operations into an immersive tactical experience with **dual-theme identity switching** between Imperial (standard) and Crimson Dawn (syndicate) modes.
 
 Built for learning, experimentation, and showcasing full-stack development skills, Hololab demonstrates:
 - **Clean Architecture**: Separation of concerns with FastAPI backend + React frontend
 - **Type Safety**: End-to-end TypeScript and Pydantic validation
-- **Modern Tooling**: Vite, Tailwind CSS, SQLAlchemy ORM
-- **Themeable Design System**: Custom utilities for holographic UI elements
+- **Modern Tooling**: Vite, Tailwind CSS, SQLAlchemy ORM, Framer Motion
+- **Dynamic Theming**: Identity-based UI transformations (Empire vs. Syndicate)
+- **JWT Authentication**: Secure user sessions with bcrypt password hashing
+- **Real-time Data Visualization**: Interactive charts with Recharts library
+
+### 🎭 Dual Identity System
+
+Hololab features a **contextual theme engine** that transforms the entire application based on user identity:
+
+- **Empire Mode** (Default): Professional blue/cyan holographic UI for standard operations
+- **Crimson Dawn Mode**: Aggressive red/gold syndicate aesthetic for illicit operations
+
+Simply log in as `crimson_dawn` to unlock the alternate reality — complete with renamed features, recolored interfaces, and thematic language adjustments.
 
 > ⚠️ **Active Development Notice**  
 > Hololab is currently in active development. Features are being added regularly, and breaking changes may occur. See the [Roadmap](#-roadmap) for upcoming features.
@@ -37,24 +48,59 @@ Built for learning, experimentation, and showcasing full-stack development skill
 
 ## ✨ Features
 
-### Currently Implemented
-- ✅ **Inventory CRUD Operations** – Create, read, and delete items with name, description, and price
-- ✅ **Real-Time UI Updates** – Instant feedback on mutations with status indicators
-- ✅ **Sci-Fi Themed Interface** – Holographic glows, scanlines, corner accents, and tactical typography
-- ✅ **Cinematic Animations** – Powered by Framer Motion for staggered entrances and smooth transitions
+### 🎯 Core Functionality
+
+#### 🔐 Authentication & Security
+- ✅ **JWT Token Authentication** – Secure login system with Bearer token validation
+- ✅ **Password Hashing** – Bcrypt encryption for user credentials
+- ✅ **Protected Routes** – Route guards for authenticated pages
+- ✅ **Session Persistence** – LocalStorage-based session management
+
+#### 📦 Inventory Management
+- ✅ **Full CRUD Operations** – Create, read, and delete items (update pending)
+- ✅ **Modal-Based Item Creation** – Polished popup form with validation
+- ✅ **Real-Time UI Updates** – Instant table refresh after mutations
+- ✅ **Status Indicators** – In Stock / Depleted badges with conditional styling
+- ✅ **SQLAlchemy ORM** – Persistent SQLite database storage
+
+#### 🎯 Eliminations (Bounty System)
+- ✅ **Bounty Tracking** – Mission-style card grid with target information
+- ✅ **Status Management** – Active, Hunting, Completed, Detained states
+- ✅ **Action Buttons** – Accept contracts / Deploy forces with PUT updates
+- ✅ **Search & Filter** – Real-time search by name or region
+- ✅ **Create New Bounties** – Modal form for adding new targets/contracts
+- ✅ **Dynamic Theming** – Red "Contracts" for Syndicate, Cyan "Targets" for Empire
+
+#### 💰 Finance Module
+- ✅ **Transaction Ledger** – Tabular view of all financial activity
+- ✅ **Income/Expense Indicators** – Color-coded with trend icons
+- ✅ **Category Tags** – Revenue, R&D, Smuggling, Overhead, etc.
+- ✅ **Export Ready** – CSV download button (placeholder)
+- ✅ **Thematic Data** – "Tribute Ledger" vs "Imperial Treasury"
+
+#### 📊 Dashboard & Analytics
+- ✅ **Stat Cards** – Key metrics with trend indicators (revenue, cargo, bounties, fleet health)
+- ✅ **Revenue Chart** – Area chart with 7-day trend visualization (Recharts)
+- ✅ **Identity-Aware Stats** – Different KPIs for Empire vs Syndicate
+- ✅ **Real-Time Date Display** – Galactic calendar (3 ABY)
+
+#### 🎨 UI/UX & Design
+- ✅ **Dual Theme Engine** – Complete UI transformation based on user identity
+- ✅ **Sci-Fi Interface** – Holographic glows, scanlines, corner accents, tactical typography
+- ✅ **Framer Motion Animations** – Staggered card entrances, smooth transitions
 - ✅ **Responsive Design** – Mobile-first layouts with grid/flexbox
-- ✅ **Landing Page** – Marketing hero, feature showcase, pricing tiers, and footer
-- ✅ **RESTful API** – FastAPI backend with automatic OpenAPI documentation
+- ✅ **Landing Page** – Marketing hero, feature showcase, pricing tiers, footer
+- ✅ **Custom Fonts** – Death Star (display) and Eurostile (mono)
+- ✅ **Glass Morphism** – Backdrop blur effects and translucent panels
 
 ### 🚧 In Progress
-- 🔄 Authentication System (Login UI & JWT Backend)
-- 🔄 Component refactoring (Hero, Features extraction)
-- 🔄 Item update endpoint (PATCH)
-- 🔄 Form validation enhancements
-- 🔄 Design token centralization
+- 🔄 Item **UPDATE** endpoint (PATCH) for inventory editing
+- 🔄 Backend bounty persistence (currently using mock data)
+- 🔄 Advanced form validation with error messages
+- 🔄 Export to CSV functionality for finance module
 
 ### 📋 Planned Features
-See the full [Roadmap](#-roadmap) below for upcoming modules like authentication, analytics, WebSocket updates, and domain-specific dashboards (Hyperlane Routes, Droid Diagnostics, Bounty Board).
+See the full [Roadmap](#-roadmap) below for upcoming enhancements like PostgreSQL migration, WebSocket updates, multi-tenancy, and additional domain dashboards.
 
 ---
 
@@ -68,6 +114,8 @@ See the full [Roadmap](#-roadmap) below for upcoming modules like authentication
 ![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-D71F00?style=flat-square&logo=sqlalchemy&logoColor=white)
 ![SQLite](https://img.shields.io/badge/SQLite-003B57?style=flat-square&logo=sqlite&logoColor=white)
 ![Pydantic](https://img.shields.io/badge/Pydantic-E92063?style=flat-square&logo=pydantic&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-000000?style=flat-square&logo=jsonwebtokens&logoColor=white)
+![Bcrypt](https://img.shields.io/badge/Bcrypt-338?style=flat-square&logo=security&logoColor=white)
 
 ### Frontend
 ![React](https://img.shields.io/badge/React_19-61DAFB?style=flat-square&logo=react&logoColor=black)
@@ -76,6 +124,8 @@ See the full [Roadmap](#-roadmap) below for upcoming modules like authentication
 ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)
 ![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=flat-square&logo=framer&logoColor=white)
 ![React Router](https://img.shields.io/badge/React_Router-CA4245?style=flat-square&logo=react-router&logoColor=white)
+![Recharts](https://img.shields.io/badge/Recharts-22B5BF?style=flat-square&logo=react&logoColor=white)
+![React Hook Form](https://img.shields.io/badge/React_Hook_Form-EC5990?style=flat-square&logo=reacthookform&logoColor=white)
 
 </div>
 
@@ -106,13 +156,19 @@ python -m venv venv
 .\venv\Scripts\Activate.ps1
 
 # Install dependencies
-pip install fastapi uvicorn sqlalchemy pydantic bcrypt python-multipart
+pip install fastapi uvicorn sqlalchemy pydantic bcrypt python-multipart python-jose[cryptography] passlib
 
 # Run the server
 python -m uvicorn main:app --reload
 ```
 Backend will be available at `http://127.0.0.1:8000`  
 API docs: `http://127.0.0.1:8000/docs`
+
+**🔑 Default Admin Credentials:**
+- Username: `crimson_dawn`
+- Password: `syndicate`
+
+> This account is auto-created on first run and unlocks Syndicate theme mode.
 
 #### Frontend Setup
 ```powershell
@@ -134,27 +190,48 @@ Frontend will be available at `http://localhost:5173`
 ```
 hololab/
 ├── backend/
-│   ├── main.py           # FastAPI app + endpoints
-│   ├── database.py       # SQLAlchemy engine/session
-│   ├── models.py         # ORM models
-│   ├── schemas.py        # Pydantic schemas
-│   └── hololab.db        # SQLite database (generated)
+│   ├── main.py           # FastAPI app + endpoints (inventory, bounties, finance, auth)
+│   ├── database.py       # SQLAlchemy engine/session configuration
+│   ├── models.py         # ORM models (User, Item tables)
+│   ├── schemas.py        # Pydantic request/response schemas
+│   ├── token_auth.py     # JWT token creation and verification
+│   ├── hashing.py        # Bcrypt password hashing utilities
+│   └── hololab.db        # SQLite database (auto-generated)
 │
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── landing/       # Hero, Features, Pricing, Footer
-│   │   │   ├── layout/        # GridBackground
-│   │   │   ├── ItemForm.tsx
-│   │   │   └── NavBar.tsx
+│   │   │   ├── auth/
+│   │   │   │   └── ProtectedRoute.tsx   # Route guard for authenticated pages
+│   │   │   ├── dashboard/
+│   │   │   │   ├── StatCard.tsx         # KPI metric display card
+│   │   │   │   └── RevenueChart.tsx     # 7-day area chart with Recharts
+│   │   │   ├── inventory/
+│   │   │   │   ├── AddItemModal.tsx     # Modal form for creating items
+│   │   │   │   └── ItemForm.tsx         # Reusable form component
+│   │   │   ├── landing/
+│   │   │   │   ├── Footer.tsx           # Marketing footer
+│   │   │   │   ├── Pricing.tsx          # Pricing tiers section
+│   │   │   │   └── TrustedBy.tsx        # Brand logos section
+│   │   │   └── layout/
+│   │   │       ├── GridBackground.tsx   # Animated dot grid backdrop
+│   │   │       ├── NavBar.tsx           # Landing page navigation
+│   │   │       ├── SideBar.tsx          # Dashboard side navigation
+│   │   │       └── TopBar.tsx           # Dashboard top bar
+│   │   ├── layouts/
+│   │   │   └── DashboardLayout.tsx      # Dashboard shell with sidebar/topbar
 │   │   ├── pages/
-│   │   │   ├── Home.tsx       # Landing page
-│   │   │   ├── Login.tsx      # Authentication
-│   │   │   └── Inventory.tsx  # Dashboard
-│   │   ├── api.ts        # API client functions
-│   │   ├── App.tsx       # Router configuration
+│   │   │   ├── Home.tsx                 # Marketing landing page
+│   │   │   ├── Login.tsx                # Authentication page
+│   │   │   ├── DashboardHome.tsx        # Main dashboard with stats + chart
+│   │   │   ├── Inventory.tsx            # Cargo/contraband management table
+│   │   │   ├── Eliminations.tsx         # Bounty tracking grid (targets/contracts)
+│   │   │   └── Finance.tsx              # Transaction ledger table
+│   │   ├── api.ts        # Axios API client + endpoint functions
+│   │   ├── App.tsx       # React Router configuration
 │   │   └── main.tsx      # React entrypoint
-│   ├── public/           # Static assets
+│   ├── public/
+│   │   └── fonts/        # Death Star & Eurostile custom fonts
 │   └── package.json
 │
 └── README.md
@@ -174,44 +251,76 @@ Hololab's visual language is inspired by:
 | Color | Hex | Usage |
 |-------|-----|-------|
 | Empire Black | `#0A0A0A` | Background base |
-| Hologram Blue | `#00F0FF` | Primary accent, interactive elements |
+| Hologram Blue | `#00F0FF` | Primary accent (Empire mode) |
+| Crimson Light | `#FF4757` | Primary accent (Syndicate mode) |
+| Syndicate Gold | `#FFD93D` | Secondary accent (Syndicate) |
 | Yoda Green | `#7FFF00` | Status indicators (online, success) |
-| Tatooine Sand | `#E8D4B0` | Secondary text |
+| Tatooine Sand | `#E8D4B0` | Secondary text (Empire) |
 | Gray Variants | `#1F1F1F - #6B7280` | Borders, inactive states |
+
+### Theme Switching Logic
+Every page checks `localStorage.getItem('username')` and applies conditional styling:
+- `crimson_dawn` → Syndicate theme (red/gold)
+- All others → Empire theme (cyan/blue)
+
+Features dynamically rename ("Cargo" ↔ "Contraband", "Targets" ↔ "Contracts") and buttons, borders, and glows recolor instantly.
 
 ---
 
 ## 🗺️ Roadmap
 
-### Phase 1: Foundation (Current)
-- [x] Basic CRUD API
-- [x] Frontend routing
-- [x] Themed UI components
-- [ ] Item update endpoint
-- [ ] Component extraction refactor
+### ✅ Phase 1: Foundation (Completed Q4 2025)
+- [x] Basic CRUD API with FastAPI
+- [x] SQLite database with SQLAlchemy ORM
+- [x] React frontend with TypeScript
+- [x] JWT authentication system
+- [x] Dual theme engine (Empire/Syndicate)
+- [x] Responsive layouts with Tailwind CSS
+- [x] Landing page with hero & pricing
+- [x] Dashboard with stat cards & analytics chart
+- [x] Inventory management (Create, Read, Delete)
+- [x] Bounty tracking system (Eliminations page)
+- [x] Finance ledger (Transactions table)
+
+### 🚧 Phase 2: Core Enhancements (Q1 2026)
+- [ ] Item **UPDATE** endpoint (PATCH) for inventory editing
+- [ ] Database persistence for bounties (replace mock data)
+- [ ] Database persistence for transactions
+- [ ] Advanced form validation with error boundaries
+- [ ] CSV export functionality for finance module
+- [ ] User registration page
+- [ ] Password reset flow
+- [ ] Profile settings page
+- [ ] Toast notifications for user feedback
+- [ ] Loading skeletons for all data tables
+- [ ] Pagination for large datasets
+- [ ] Search & filter for inventory
+- [ ] Component extraction refactor (Hero, Features)
 - [ ] Centralized Tailwind theme config
 
-### Phase 2: Core Features (Q1 2026)
-- [ ] Authentication (JWT)
-- [ ] User roles (Admin, Operator, Viewer)
-- [ ] Item search & filtering
-- [ ] Pagination
-- [ ] Form validation & error handling
-- [ ] Alembic migrations
+### 🔮 Phase 3: Advanced Features (Q2 2026)
+- [ ] **Hyperlane Routes** – Navigation path optimization dashboard
+- [ ] **Droid Diagnostics** – Fleet health monitoring module
+- [ ] **Reports & Analytics** – Exportable insights and projections
+- [ ] Role-based access control (Admin, Operator, Viewer)
+- [ ] WebSocket integration for real-time updates
+- [ ] Dark/light mode toggle (in addition to identity themes)
+- [ ] Multi-language support (i18n)
+- [ ] Advanced charts (bar, pie, line) with drill-down
+- [ ] Audit log for all CRUD operations
 
-### Phase 3: Advanced Modules (Q2 2026)
-- [ ] **Hyperlane Routes** – Navigation path optimization
-- [ ] **Droid Diagnostics** – Fleet health monitoring
-- [ ] **Bounty Board** – Reputation & task tracking
-- [ ] **Credit Analytics** – Financial projections & reports
-
-### Phase 4: Production Ready (Q3 2026)
-- [ ] PostgreSQL migration
-- [ ] Docker containerization
-- [ ] CI/CD pipeline
-- [ ] Unit & integration tests
-- [ ] WebSocket real-time updates
-- [ ] Multi-tenancy support
+### 🚀 Phase 4: Production Ready (Q3 2026)
+- [ ] PostgreSQL migration from SQLite
+- [ ] Docker containerization (frontend + backend + db)
+- [ ] CI/CD pipeline with GitHub Actions
+- [ ] Unit & integration test suites (Pytest + Vitest)
+- [ ] End-to-end testing with Playwright
+- [ ] Performance monitoring (Sentry integration)
+- [ ] Rate limiting & security hardening
+- [ ] Multi-tenancy support (organization isolation)
+- [ ] Cloud deployment (AWS/GCP/Azure)
+- [ ] CDN integration for static assets
+- [ ] Comprehensive API documentation site
 
 ---
 
@@ -237,13 +346,33 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 ### Landing Page Hero
 <img src="https://user-images.githubusercontent.com/placeholder/hero-screenshot.png" alt="Hero Section" width="700"/>
 
-### Inventory Dashboard
+### Dashboard Overview (Empire Theme)
+<img src="https://user-images.githubusercontent.com/placeholder/dashboard-screenshot.png" alt="Dashboard" width="700"/>
+
+### Inventory Management (Syndicate Theme)
 <img src="https://user-images.githubusercontent.com/placeholder/inventory-screenshot.png" alt="Inventory Dashboard" width="700"/>
 
-### Feature Grid
-<img src="https://user-images.githubusercontent.com/placeholder/features-screenshot.png" alt="Features Grid" width="700"/>
+### Eliminations - Bounty Tracking
+<img src="https://user-images.githubusercontent.com/placeholder/bounties-screenshot.png" alt="Bounty Grid" width="700"/>
+
+### Finance Ledger
+<img src="https://user-images.githubusercontent.com/placeholder/finance-screenshot.png" alt="Transaction Table" width="700"/>
 
 </div>
+
+---
+
+## 🎭 Theme Showcase
+
+| Feature | Empire Mode | Syndicate Mode |
+|---------|-------------|----------------|
+| **Primary Color** | Cyan (#00F0FF) | Crimson (#FF4757) |
+| **Dashboard Title** | "Cockpit Overview" | "Syndicate Command" |
+| **Inventory** | "Cargo Logistics" | "Contraband Manifest" |
+| **Eliminations** | "Priority Targets" | "Active Contracts" |
+| **Finance** | "Imperial Treasury" | "Tribute Ledger" |
+| **Status Indicator** | Green pulse | Red pulse |
+| **Button Style** | Blue glow | Red glow |
 
 ---
 
@@ -255,10 +384,43 @@ Once the backend is running, visit the auto-generated interactive API docs:
 
 ### Quick API Reference
 ```http
-GET    /           # Health check
-POST   /items/     # Create item
-GET    /items/     # List all items
+# Health Check
+GET    /           # Returns welcome message
+
+# Authentication
+POST   /user       # Create new user account (requires username + password)
+POST   /login      # Authenticate user, returns JWT access_token
+
+# Inventory (SQL Database)
+GET    /items/     # List all inventory items
+POST   /items/     # Create new item (requires name, description, price)
 DELETE /items/{id} # Delete item by ID
+
+# Bounties (Mock Data - Persistence Pending)
+GET    /bounties   # List all bounties (filtered by user type)
+PUT    /bounties/{id} # Update bounty status (Active, Hunting, Completed, etc.)
+
+# Finance (Mock Data - Persistence Pending)
+GET    /finance    # List all transactions (revenue & expenses)
+```
+
+**Example Request: Create Item**
+```bash
+curl -X POST "http://127.0.0.1:8000/items/" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Coaxium Canisters",
+    "description": "Highly volatile fuel source",
+    "price": 50000,
+    "is_active": true
+  }'
+```
+
+**Example Request: Login**
+```bash
+curl -X POST "http://127.0.0.1:8000/login" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "username=crimson_dawn&password=syndicate"
 ```
 
 ---
@@ -266,11 +428,16 @@ DELETE /items/{id} # Delete item by ID
 ## 🐛 Known Issues
 
 - Hero image uses `scale-130` transform causing overflow on mobile (fix scheduled)
-- No update endpoint yet (PATCH in progress)
-- Deletion uses browser confirm dialog (custom modal planned)
-- No authentication layer (auth system in roadmap)
+- No **UPDATE** endpoint for inventory items yet (PATCH in progress)
+- Bounty and Finance data uses mock arrays instead of database (migration planned)
+- Deletion uses browser confirm dialog (custom modal planned for consistency)
+- No password strength validation on registration
+- CSV export button is placeholder (functionality pending)
+- Charts don't resize smoothly on mobile (Recharts responsiveness improvement needed)
+- No loading states on bounty/finance pages
+- Form validation doesn't show inline error messages yet
 
-See [Issues](https://github.com/tommyc10/hololab/issues) for full list.
+See [Issues](https://github.com/tommyc10/hololab/issues) for full list and progress tracking.
 
 ---
 

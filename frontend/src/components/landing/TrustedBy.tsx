@@ -3,9 +3,10 @@ import { motion } from 'framer-motion';
 const PARTNERS = [
   "The Hutt Clan",
   "Crimson Dawn",
-  "Mos Eisley",
+  "Mos Eisley Cantina",
   "Pyke Syndicate",
   "Bounty Hunters Guild",
+  "Black Sun"
 ];
 
 export function TrustedBy() {

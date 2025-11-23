@@ -1,8 +1,8 @@
 
 import { Outlet } from 'react-router-dom';
-import { Sidebar } from './SideBar';
-import { TopBar } from './TopBar';
-import { GridBackground } from './GridBackground';
+import { Sidebar } from '../components/layout/SideBar';
+import { TopBar } from '../components/layout/TopBar';
+import { GridBackground } from '../components/layout/GridBackground';
 
 export function DashboardLayout() {
   return (

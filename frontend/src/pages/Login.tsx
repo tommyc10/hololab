@@ -34,8 +34,11 @@ export function Login() {
       
       // 4. Save the Token (The "Keycard")
       localStorage.setItem('token', result.access_token);
+
+      // 5. Save the username
+      localStorage.setItem('username', data.username);
       
-      // 5. Route to Dashboard
+      // 6. Route to Dashboard
       navigate('/dashboard');
       
     } catch (err) {

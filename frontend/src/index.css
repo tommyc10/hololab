@@ -17,6 +17,12 @@
   --color-tatooine-sand: #FFD580;    /* Warnings, Secondary Text */
   --color-sith-red: #FF3333;         /* Delete, Errors, Alerts */
   --color-yoda-green: #33FF57;       /* Success, Money, Positive Trends */
+
+
+    /* CRIMSON DAWN SYNDICATE PALETTE */
+  --color-crimson-light: #FF0033;    /* The bright, dangerous laser red */
+  --color-crimson-dark: #4A0404;     /* The deep, blood-red background */
+  --color-syndicate-gold: #D4AF37;   /* The luxury gold accent */
   
   /* THE UI: Borders & Glass */
   --color-glass-border: rgba(0, 240, 255, 0.2);

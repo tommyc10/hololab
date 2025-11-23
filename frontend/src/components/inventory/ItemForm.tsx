@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { createItem } from '../api';
+import { createItem } from '../../api';
 
 interface ItemFormProps {
     onItemCreated: () => void;

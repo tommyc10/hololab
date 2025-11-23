@@ -5,8 +5,8 @@ export function TopBar() {
       
       {/* Left: Breadcrumb / Status */}
       <div className="flex items-center gap-4">
-        <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-        <span className="text-xs font-mono text-emerald-500 tracking-widest uppercase">System Secure</span>
+        <div className="w-2 h-2 bg-crimson-light rounded-full animate-pulse"></div>
+        <span className="text-xs font-mono text-crimson-light tracking-widest uppercase">System Secure</span>
       </div>
 
       {/* Right: User Data */}
