@@ -43,6 +43,16 @@ class Planet(BaseModel):
     activity: str     # e.g. "Imperial Blockade", "Rebel Cell"
 
 
+class Operative(BaseModel):
+    id: int
+    name: str
+    location: str
+    role: str
+    status: str   # "Active", "Deep Cover", "Compromised"
+    cover: str    # e.g. "Protocol Droid", "Bounty Hunter"
+    image: str
+
+
 
 
 
@@ -80,6 +90,56 @@ galaxy_db = [
     {"id": 5, "name": "Kessel", "sector": "Outer Rim", "coords": [85, 40], "risk": "High", "activity": "Spice Lane Patrols"},
     {"id": 6, "name": "Corellia", "sector": "Core", "coords": [55, 60], "risk": "High", "activity": "Shipyard Inspection"},
 ]
+
+
+operatives_db = [
+    {
+        "id": 1, 
+        "name": "Margo", 
+        "location": "The Vermillion", 
+        "role": "Comms Officer", 
+        "status": "Active", 
+        "cover": "N/A",
+        "image": "/operatives/margo.jpg" # <--- ADDED (Even if file doesn't exist, it fixes the error)
+    },
+    {
+        "id": 2, 
+        "name": "Unit 88", 
+        "location": "Imperial Palace", 
+        "role": "Informant", 
+        "status": "Deep Cover", 
+        "cover": "Protocol Droid",
+        "image": "/operatives/unit88.jpg" # <--- ADDED
+    },
+    {
+        "id": 3, 
+        "name": "Beilert Valance", 
+        "location": "Executor", 
+        "role": "Unwitting Asset", 
+        "status": "Compromised", 
+        "cover": "Bounty Hunter", 
+        "image": "/operatives/beilertvalance.jpg"
+    },
+    {
+        "id": 4, 
+        "name": "Ochi of Bestoon", 
+        "location": "Outer Rim", 
+        "role": "Assassin", 
+        "status": "Active", 
+        "cover": "Sith Loyalist", 
+        "image": "/operatives/ochi.jpg"
+    },
+    {
+        "id": 5, 
+        "name": "Admiral Piett", 
+        "location": "Executor", 
+        "role": "Admiral", 
+        "status": "Active", 
+        "cover": "N/A",
+        "image": "/operatives/piett.jpg" 
+    }
+]
+
 
 # --- DATABASE SEEDING ---
 def create_initial_user():
@@ -205,7 +265,13 @@ def update_bounty_status(bounty_id: int, status: str = Body(..., embed=True)):
 
 
 
-# 3. ADD ENDPOINT
+#heat map
 @app.get("/heat", response_model=List[Planet])
 def get_heat_map():
     return galaxy_db
+
+
+# operatives
+@app.get("/operatives", response_model=List[Operative])
+def get_operatives():
+    return operatives_db

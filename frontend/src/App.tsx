@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Home } from './pages/Home'; 
 import { Login } from './pages/Login';
 import { Inventory } from './pages/Inventory'; 
-import { DashboardHome } from './pages/DashboardHome';
+import DashboardHome from './pages/DashboardHome';
 import HeatMap from './pages/HeatMap';
 // --- NEW IMPORTS (Ensure these match your file names) ---
 import Eliminations from './pages/Eliminations.tsx';
@@ -14,6 +14,7 @@ import Finance from './pages/Finance.tsx';
 import { DashboardLayout } from './layouts/DashboardLayout';
 import { Navbar } from './components/layout/NavBar';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
+import Operatives from './pages/Operatives.tsx';
 
 function App() {
   return (
@@ -49,7 +50,7 @@ function App() {
             {/* The New Pages */}
             <Route path="/eliminations" element={<Eliminations />} />
             <Route path="/finance" element={<Finance />} />
-            
+            <Route path="/operatives" element={<Operatives />} />
             {/* Placeholder for future expansion */}
             <Route path="/heat" element={<HeatMap />} />
 

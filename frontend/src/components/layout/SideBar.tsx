@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+
+
+
 import { 
   // Standard Icons
   Home, Box, Target, CreditCard, LogOut,
   // Crimson Dawn Icons
-  Cpu, PackageSearch, Coins, Radar, Crosshair,
+  Cpu, PackageSearch, Coins, Radar, Crosshair, Users
 } from 'lucide-react';
 
 export function Sidebar() {
@@ -71,6 +74,9 @@ export function Sidebar() {
             <NavLink to="/eliminations" className={getLinkClass}>
               <Crosshair size={18} /> <span>Eliminations</span>
             </NavLink>
+            <NavLink to="/operatives" className={getLinkClass}>
+              <Users size={18} /> <span>Field Agents</span>
+            </NavLink>
             <NavLink to="/finance" className={getLinkClass}>
               <Coins size={18} /> <span>Tribute Flows</span>
             </NavLink>
@@ -96,6 +102,9 @@ export function Sidebar() {
             </NavLink>
             <NavLink to="/bounties" className={getLinkClass}>
               <Target size={18} /> <span>Bounties</span>
+            </NavLink>
+            <NavLink to="/operatives" className={getLinkClass}>
+              <Users size={18} /> <span>Field Agents</span>
             </NavLink>
             <NavLink to="/finance" className={getLinkClass}>
               <CreditCard size={18} /> <span>Finance</span>

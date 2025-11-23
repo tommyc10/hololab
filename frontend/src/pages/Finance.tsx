@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { TrendingUp, TrendingDown, Download } from "lucide-react";
+import { TrendingUp, TrendingDown, Download, Coins, Landmark } from "lucide-react"; // <--- Import Coins/Landmark
 
 interface Transaction {
   id: number;
@@ -17,16 +17,21 @@ export default function Finance() {
   const username = localStorage.getItem("username");
   const isSyndicate = username === "crimson_dawn";
 
+  // --- UPDATED THEME CONFIG (Now includes Icons & Titles) ---
   const theme = isSyndicate
     ? { 
-        text: "text-amber-500", 
-        header: "bg-amber-950/30 text-amber-100",
-        border: "border-amber-900/30"
+        text: "text-red-500", 
+        header: "bg-red-950/30 text-red-100",
+        border: "border-red-900/30",
+        icon: Coins,              // <--- Added Icon
+        title: "Tribute Ledger"   // <--- Added Title
       }
     : { 
         text: "text-cyan-400", 
         header: "bg-slate-900 text-cyan-100",
-        border: "border-cyan-900/30"
+        border: "border-cyan-900/30",
+        icon: Landmark,           // <--- Added Icon
+        title: "Imperial Treasury"// <--- Added Title
       };
 
   useEffect(() => {
@@ -37,15 +42,24 @@ export default function Finance() {
 
   return (
     <div className="p-8 space-y-6 min-h-screen">
-      <div className="flex justify-between items-center border-b border-gray-800 pb-6">
-        <div>
-          <h1 className={`text-3xl font-bold uppercase tracking-widest ${theme.text}`}>
-            {isSyndicate ? "Tribute Ledger" : "Imperial Treasury"}
-          </h1>
-          <p className="text-gray-500 text-sm mt-1 font-mono">
-            Fiscal Year 25 BBY // Sector 7
-          </p>
+      
+      {/* --- HEADER (Updated to match Sleeper Network exactly) --- */}
+      <div className="flex justify-between items-end border-b border-gray-800 pb-6">
+        
+        {/* Left Side: Icon + Text */}
+        <div className="flex items-center gap-4">
+          <theme.icon className={`w-10 h-10 ${theme.text}`} />
+          <div>
+            <h1 className={`text-3xl font-black uppercase tracking-widest ${theme.text}`}>
+              {theme.title}
+            </h1>
+            <p className="text-gray-500 text-sm mt-1 font-mono">
+              Fiscal Year 3 ABY // Sector 7
+            </p>
+          </div>
         </div>
+
+        {/* Right Side: Action Button */}
         <button className="flex items-center gap-2 px-4 py-2 border border-gray-700 hover:bg-gray-800 rounded text-sm transition-colors text-gray-300 font-mono uppercase">
           <Download size={16} /> Export CSV
         </button>
