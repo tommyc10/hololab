@@ -39,12 +39,12 @@ const FEATURES = [
     desc: "Encrypted database to protect sensitive client information from bounty hunters."
   },
   {
-    image: "/hero.png",
+    image: "/droidfleet.png",
     title: "Droid Fleet Diagnostics",
     desc: "Automated diagnostic cycles for all service and protocol droids."
   },
   {
-    image: "/cargo.png",
+    image: "/hyperlaneroutes.png",
     title: "Hyperlane Routes",
     desc: "Optimized navigation paths avoiding Imperial blockades and asteroid fields."
   },
@@ -60,76 +60,94 @@ export function Home() {
     <GridBackground>
       
       {/* --- HERO SECTION --- */}
-      <section id="hero" className="relative pt-20 pb-32 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
+      <section id="hero" className="relative h-screen w-full flex items-center overflow-hidden">
+        
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img 
+            src="/hero.png" 
+            alt="Hololab Interface" 
+            className="w-full h-full object-cover"
+          />
           
-          {/* Left: Content */}
+          {/* Dark Overlay for Text Readability */}
+          <div className="absolute inset-0 bg-empire-black/70"></div>
+          
+          {/* Left Shadow Gradient - Darkens text area */}
+          <div className="absolute inset-y-0 left-0 w-2/3 bg-linear-to-r from-empire-black via-empire-black/90 to-transparent"></div>
+          
+          {/* Top Gradient Blend */}
+          <div className="absolute top-0 left-0 right-0 h-32 bg-linear-to-b from-empire-black to-transparent"></div>
+          
+          {/* Bottom Gradient Blend */}
+          <div className="absolute bottom-0 left-0 right-0 h-64 bg-linear-to-t from-empire-black via-empire-black/80 to-transparent"></div>
+          
+          {/* Hologram Scanlines */}
+          <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,240,255,0.02)_50%)] bg-size-[100%_4px] pointer-events-none"></div>
+        </div>
+
+        {/* Content */}
+        <div className="relative z-20 max-w-7xl mx-auto px-6 w-full">
           <motion.div 
-            className="space-y-8 relative z-10"
+            className="max-w-4xl space-y-10"
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
           >
             
-            {/* Badge */}
-            <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-3 py-1 rounded-sm border border-hologram-blue/30 bg-hologram-blue/5">
-              <span className="w-2 h-2 rounded-full bg-yoda-green animate-pulse"></span>
-              <span className="text-xs font-mono text-yoda-green tracking-widest uppercase"> SECURE CONNECTION ESTABLISHED
-</span>
+            {/* System ID Eyebrow */}
+            <motion.div 
+              variants={fadeInUp}
+              className="font-mono text-xs md:text-sm text-hologram-blue tracking-widest uppercase"
+            >
+              :: SYSTEM ID: T-882 // CORELLIA SECTOR
             </motion.div>
 
             {/* Headline */}
-            <motion.h1 variants={fadeInUp} className="text-2xl font-black tracking-[0.25em] text-white uppercase group-hover:text-hologram-blue transition-colors duration-300 font-death-star">
-              HoloLab <br />
-              <span className="text-2xl font-black tracking-[0.25em] text-white uppercase group-hover:text-hologram-blue transition-colors duration-300 font-death-star">
-                Control Suite
-              </span>
-            </motion.h1>
+            <motion.div variants={fadeInUp} className="space-y-4">
+              
+              {/* Line 1: GALACTIC */}
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white uppercase leading-none tracking-[0.2em] font-death-star select-none drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]">
+                GALACTIC
+              </h1>
+              
+              {/* Line 2: OPERATIONS */}
+              <h2 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase leading-none tracking-[0.2em] font-death-star text-transparent [-webkit-text-stroke:1px_#00F0FF] [text-stroke:1px_#00F0FF] select-none opacity-90">
+                OPERATIONS
+              </h2>
+              
+            </motion.div>
 
-            {/* Subtext */}
-            <motion.p variants={fadeInUp} className="text-lg text-gray-400 max-w-xl leading-relaxed font-mono">
-              The galaxy's most advanced inventory protocol. Track shipments, manage smuggler debts, and monitor supply levels with Imperial precision.
+            {/* Description */}
+            <motion.p 
+              variants={fadeInUp}
+              className="text-lg md:text-xl text-gray-400 max-w-2xl leading-relaxed font-mono border-l-2 border-hologram-blue pl-6"
+            >
+              The galaxy's premier inventory protocol. Track shipments, manage smuggler debts, and monitor supply levels with Imperial precision.
             </motion.p>
 
             {/* CTAs */}
-            <motion.div variants={fadeInUp} className="flex flex-wrap gap-4">
+            <motion.div 
+              variants={fadeInUp}
+              className="flex flex-wrap gap-4 pt-8"
+            >
               <Link 
                 to="/login"
-                className="relative group px-8 py-4 bg-hologram-blue/10 border border-hologram-blue text-hologram-blue font-bold uppercase tracking-widest hover:bg-hologram-blue hover:text-empire-black transition-all duration-300 [clip-path:polygon(10%_0,100%_0,100%_80%,90%_100%,0_100%,0_20%)] shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:shadow-[0_0_40px_rgba(0,240,255,0.6)]"
+                className="group px-8 py-4 bg-hologram-blue text-empire-black font-bold uppercase tracking-widest hover:bg-white transition-all duration-300"
               >
-                <span className="relative z-10">Launch Terminal</span>
-                <div className="absolute inset-0 bg-hologram-blue/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <span className="flex items-center gap-2">
+                  Launch Terminal
+                  <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </span>
               </Link>
+              
+              <button className="px-8 py-4 border-2 border-white/20 bg-black/40 backdrop-blur-md text-white font-mono text-sm uppercase tracking-widest hover:bg-white/10 hover:border-white/40 transition-all duration-300">
+                View Documentation
+              </button>
             </motion.div>
           </motion.div>
-
-          {/* Right: Visual */}
-          <motion.div 
-            className="relative group"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            {/* Glow Effect */}
-            <div className="absolute -inset-4 bg-hologram-blue/20 blur-3xl rounded-full opacity-50 animate-pulse"></div>
-            
-            {/* Image Container */}
-            <div className="relative border border-hologram-blue/30 bg-gray-900/50 p-2 rounded-lg backdrop-blur-sm scale-130">
-              {/* Corner Accents (The Tech Look) */}
-              <div className="absolute -top-1 -left-1 w-6 h-6 border-t-2 border-l-2 border-hologram-blue"></div>
-              <div className="absolute -bottom-1 -right-1 w-6 h-6 border-b-2 border-r-2 border-hologram-blue"></div>
-              
-              <img 
-                src="/hero.png" 
-                alt="Hololab Interface" 
-                className="w-full h-auto rounded border border-white/5 shadow-2xl"
-              />
-              
-              {/* Scanline Overlay */}
-              <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,240,255,0.05)_50%)] bg-size-[100%_4px] pointer-events-none"></div>
-            </div>
-          </motion.div>
-
         </div>
       </section>
 
