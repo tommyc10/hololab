@@ -96,6 +96,17 @@ def seed_database():
             syndicate_admin = User(username="crimson_dawn", hashed_password=Hash.bcrypt("syndicate"))
             db.add(syndicate_admin)
             db.commit()
+        
+        existing_sun = db.query(User).filter(User.username == "black_sun").first()
+        if not existing_sun:
+         print("⚡ CREATING BLACK SUN VIGO ACCOUNT...")
+        # Password is 'xizor'
+        sun_user = User(username="black_sun", hashed_password=Hash.bcrypt("xizor"))
+        db.add(sun_user)
+        db.commit()
+
+
+        
             
         # 2. Seed Empire Admin
         existing_admin = db.query(User).filter(User.username == "admin").first()
@@ -125,6 +136,17 @@ def seed_database():
             ]
             db.add_all(bounties)
             db.commit()
+
+         # 2. Add Black Sun Bounties (NEW)
+        # Prince Xizor hated Darth Vader, so Vader is a target here too.
+        if db.query(Bounty).filter(Bounty.type == "Black Sun").count() == 0:
+            sun_bounties = [
+            Bounty(name="Darth Vader", region="Executor", reward=500000000, status="Avoid", type="Black Sun"),
+            Bounty(name="Luke Skywalker", region="Tatooine", reward=10000000, status="Hunting", type="Black Sun"),
+            Bounty(name="Dash Rendar", region="Ord Mantell", reward=25000, status="Active", type="Black Sun"),
+        ]
+        db.add_all(sun_bounties)
+        db.commit()
 
         # 4. Seed Transactions (UPDATED)
         if db.query(Transaction).count() == 0:
@@ -191,6 +213,18 @@ def seed_database():
             ]
             db.add_all(items)
             db.commit()
+
+           # 3. Add Black Sun Contraband (NEW)
+            # Items specific to Falleen/Black Sun culture
+        if db.query(Item).filter(Item.name == "Falleen Pheromones").count() == 0:
+            sun_items = [
+            Item(name="Falleen Pheromones", description="Biochemical mind control agent.", price=80000),
+            Item(name="Vigo Data Cylinder", description="Encrypted Black Sun financial records.", price=150000),
+            Item(name="Human Replica Droid", description="Advanced assassination unit (Guri model).", price=2000000),
+        ]
+        db.add_all(sun_items)
+        db.commit()
+        
             
     except Exception as e:
         print(f"Error seeding database: {e}")
